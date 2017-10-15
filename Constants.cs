@@ -24,7 +24,5 @@
     {
         public static int Width { get; set; }
         public static int Height { get; set; }
-        public const int MapCellWidth = 48;
-        public const int MapCellHeight = 48;
     }
 }

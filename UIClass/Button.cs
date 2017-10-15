@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utilities.Utility.Drawing;
+using Utilities.Drawing;
 
 namespace Utilities.UIClass
 {
@@ -216,7 +216,7 @@ namespace Utilities.UIClass
         {
             MouseClick += (sender, e) =>
             {
-                
+
             };
             MouseDown += (sender, e) =>
             {
@@ -251,7 +251,7 @@ namespace Utilities.UIClass
             switch (contentType)
             {
                 case ButtonContentType.Text:
-                    spriteBatch.DrawString(font != null ? font : CONTENT_MANAGER.defaultfont, (string.IsNullOrEmpty(text)) ? "" : text, AutoSize ? StringRect : new Vector2(rect.X, rect.Y) + Size / 4, foregroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
+                    spriteBatch.DrawString(font ?? CONTENT_MANAGER.defaultfont, (string.IsNullOrEmpty(text)) ? "" : text, AutoSize ? StringRect : new Vector2(rect.X, rect.Y) + Size / 4, foregroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
 
                     DrawingHelper.DrawRectangle(internalRect, isPressed ? buttonColorPressed : buttonColorReleased, true);
                     DrawingHelper.DrawRectangle(rect, borderColor, false);

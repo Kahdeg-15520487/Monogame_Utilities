@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using Utilities.Utility.Drawing;
+using Utilities.Drawing;
 
 namespace Utilities
 {
@@ -15,7 +15,7 @@ namespace Utilities
                 get;
                 set;
             }
-            
+
             protected string text;
             public virtual string Text
             {
@@ -72,7 +72,7 @@ namespace Utilities
                 origin = new Vector2(rect.X, rect.Y) + Size / 4;
             }
 
-            public Label(string text, Point position, Vector2? size, SpriteFont font,float _scale)
+            public Label(string text, Point position, Vector2? size, SpriteFont font, float _scale)
             {
                 Text = text;
                 Position = position;

@@ -3,13 +3,17 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
+using Microsoft.Xna.Framework.Input.Touch;
+
+//Z̷̪̰̩̠̈́͑͑̇͛Å̖̯̺̜͗L͖̬̗͚ͥ̔͞G͕̝̥͊̋͐ͬͥ͊̑͜O͔͉̻̪̾͛̄̇ ̜ͨͣͧ͛̄̈́!̰͙̦̦̱̲̬̓̓ͥͯͬ̒͌ ̺̭͖̘͞h̺̮̣͎ͦ̓͑ḛ̗̰ͬ̌̓̂̊̚ ̰̥̱͕ͫ̔c͂̐ͤͧ́͗̍o̴̫͙̘͈͍͙ͫm̗̖͑̀ͧͮ͜e̜̺͈͎̬͔͌́̐̈́̅̔͂
 
 namespace Utilities.UIClass
 {
-    public abstract class UIObject:IUIEvent
+    public abstract class UIObject : IUIEvent
     {
         public Rectangle rect = new Rectangle();
-        
+
         protected Vector2 origin = Vector2.Zero;
         /// <summary>
         /// The position of the UI element a.k.a where the top left corner of this element should be
@@ -28,7 +32,8 @@ namespace Utilities.UIClass
         /// <summary>
         /// The size of the UI element a.k.a where the bottom right corner of this element should be offset by the position
         /// </summary>
-        public virtual Vector2 Size {
+        public virtual Vector2 Size
+        {
             get
             {
                 return rect.Size.ToVector2();
@@ -129,71 +134,81 @@ namespace Utilities.UIClass
                 Size = new Vector2(Size.X, Size.Y) * scale;
             }
         }
-        
-        public virtual void Update(InputState inputState, InputState lastInputState)
+
+        public virtual void Update(InputState currentInputState, InputState lastInputState)
         {
-            UIEventArgs arg = new UIEventArgs(inputState, lastInputState);
+            UIEventArgs arg = new UIEventArgs(currentInputState, lastInputState);
 
             //LostFocus
-            if (!rect.Contains(inputState.mouseState.Position) && inputState.mouseState.LeftButton == ButtonState.Pressed)
+            if ((!rect.Contains(currentInputState.mouseState.Position) && currentInputState.mouseState.LeftButton == ButtonState.Pressed)
+                || !rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
             {
                 isFocused = false;
                 OnLostFocus(this, arg);
             }
 
             //GotFocus
-            if (rect.Contains(inputState.mouseState.Position) && inputState.mouseState.LeftButton == ButtonState.Pressed)
+            if ((rect.Contains(currentInputState.mouseState.Position) && currentInputState.mouseState.LeftButton == ButtonState.Pressed)
+                || rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
             {
                 isFocused = true;
-               
+
                 OnGotFocus(this, arg);
             }
 
             //MouseClick
-            if (rect.Contains(inputState.mouseState.Position)
+            if ((rect.Contains(currentInputState.mouseState.Position)
                 && (lastInputState.mouseState.LeftButton == ButtonState.Released
-                    && inputState.mouseState.LeftButton == ButtonState.Pressed))
+                    && currentInputState.mouseState.LeftButton == ButtonState.Pressed))
+                || 
+                (rect.Contains(currentInputState.touchState.FirstOrDefault().Position)
+                && !rect.Contains(lastInputState.touchState.FirstOrDefault().Position)))
             {
                 OnMouseClick(this, arg);
             }
 
             //MouseDown
-            if (rect.Contains(inputState.mouseState.Position)
-                && inputState.mouseState.LeftButton == ButtonState.Pressed)
+            if ((rect.Contains(currentInputState.mouseState.Position)
+                && currentInputState.mouseState.LeftButton == ButtonState.Pressed)
+                || rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
             {
                 OnMouseDown(this, arg);
             }
 
             //MouseUp
-            if (rect.Contains(inputState.mouseState.Position)
+            if (rect.Contains(currentInputState.mouseState.Position)
                 && (lastInputState.mouseState.LeftButton == ButtonState.Pressed
-                    && inputState.mouseState.LeftButton == ButtonState.Released))
+                    && currentInputState.mouseState.LeftButton == ButtonState.Released))
             {
                 OnMouseUp(this, arg);
             }
 
             //MouseEnter
-            if (rect.Contains(inputState.mouseState.Position)
+            if ((rect.Contains(currentInputState.mouseState.Position)
                 && !rect.Contains(lastInputState.mouseState.Position))
+                || (rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
+                    && !rect.Contains(lastInputState.touchState.FirstOrDefault().Position))
             {
                 OnMouseEnter(this, arg);
             }
 
             //MouseLeave
-            if (!rect.Contains(inputState.mouseState.Position)
+            if ((!rect.Contains(currentInputState.mouseState.Position)
                 && rect.Contains(lastInputState.mouseState.Position))
+                || (!rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
+                    && rect.Contains(lastInputState.touchState.FirstOrDefault().Position))
             {
                 OnMouseLeave(this, arg);
             }
 
             //MouseHover
-            if (rect.Contains(inputState.mouseState.Position))
+            if (rect.Contains(currentInputState.mouseState.Position))
             {
                 OnMouseHover(this, arg);
             }
 
             //KeyPress
-            if (isFocused && inputState.keyboardState.GetPressedKeys().GetLength(0)>0)
+            if (isFocused && currentInputState.keyboardState.GetPressedKeys().GetLength(0) > 0)
             {
                 OnKeyPress(this, arg);
             }
@@ -251,7 +266,7 @@ namespace Utilities.UIClass
             LostFocus?.Invoke(sender, e);
         }
 
-        protected virtual void OnKeyPress(object sender,UIEventArgs e)
+        protected virtual void OnKeyPress(object sender, UIEventArgs e)
         {
             KeyPress?.Invoke(sender, e);
         }
@@ -271,16 +286,18 @@ namespace Utilities.UIClass
 
     public class UIEventArgs : EventArgs
     {
-        public MouseState mouseState { get; set; }
-        public MouseState lastMouseState { get; set; }
-        public KeyboardState keyboardState { get; set; }
-        public KeyboardState lastKeyboardState { get; set; }
-        public UIEventArgs(InputState inputState,InputState lastInputState)
+        public InputState currentInputState { get; }
+        public InputState lastInputState { get; }
+        public MouseState currentMouseState { get { return currentInputState.mouseState; } }
+        public MouseState lastMouseState { get { return lastInputState.mouseState; } }
+        public KeyboardState currentKeyboardState { get { return currentInputState.keyboardState; } }
+        public KeyboardState lastKeyboardState { get { return lastInputState.keyboardState; } }
+        public TouchCollection currentTouchState { get { return currentInputState.touchState; } }
+        public TouchCollection lastTouchState { get { return lastInputState.touchState; } }
+        public UIEventArgs(InputState currentInputState, InputState lastInputState)
         {
-            mouseState = inputState.mouseState;
-            lastMouseState = lastInputState.mouseState;
-            keyboardState = inputState.keyboardState;
-            lastKeyboardState = lastInputState.keyboardState;
+            this.currentInputState = currentInputState;
+            this.lastInputState = lastInputState;
         }
     }
 }

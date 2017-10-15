@@ -42,7 +42,7 @@ namespace Utilities
                 }
                 else
                 {
-                    Utility.HelperFunction.Log(new Exception(uiName + " existed"));
+                    //log stuff
                     return false;
                 }
             }
@@ -55,7 +55,7 @@ namespace Utilities
                 }
                 else
                 {
-                    Utility.HelperFunction.Log(new Exception(uiName + " not found"));
+                    //log stuff
                     return null;
                 }
             }
@@ -68,7 +68,7 @@ namespace Utilities
                 }
                 else
                 {
-                    Utility.HelperFunction.Log(new Exception(uiName + " not found"));
+                    //log stuff
                     return default(T);
                 }
             }

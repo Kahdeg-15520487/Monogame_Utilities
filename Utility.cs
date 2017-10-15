@@ -1,12 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using Utilities.Drawing;
@@ -29,40 +25,17 @@ namespace Utilities
 
             public static bool IsKeyPress(Keys k)
             {
-                return CONTENT_MANAGER.inputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.lastInputState.keyboardState.IsKeyDown(k);
+                return CONTENT_MANAGER.currentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.lastInputState.keyboardState.IsKeyDown(k);
             }
 
             public static bool IsLeftMousePressed()
             {
-                return CONTENT_MANAGER.inputState.mouseState.LeftButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.LeftButton == ButtonState.Pressed;
+                return CONTENT_MANAGER.currentInputState.mouseState.LeftButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.LeftButton == ButtonState.Pressed;
             }
 
             public static bool IsRightMousePressed()
             {
-                return CONTENT_MANAGER.inputState.mouseState.RightButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.RightButton == ButtonState.Pressed;
-            }
-
-            public static void Log(Exception e)
-            {
-                File.WriteAllText("crashlog.txt", DateTime.Now.ToString(@"dd\/MM\/yyyy HH:mm") + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.TargetSite);
-            }
-
-            public static void Log(string msg)
-            {
-                File.WriteAllText("crashlog.txt", DateTime.Now.ToString(@"dd\/MM\/yyyy HH:mm") + Environment.NewLine + msg);
-            }
-
-
-            public static Point TranslateMousePosToMapCellPos(Point mousepos, Camera camera, int width, int height)
-            {
-                //calculate currently selected mapcell
-                Vector2 temp = camera.TranslateFromScreenToWorld(mousepos.ToVector2());
-                temp.X = (int)(temp.X / Constants.MapCellWidth);       //mapcell size
-                temp.Y = (int)(temp.Y / Constants.MapCellHeight);
-
-                if (temp.X >= 0 && temp.X < width && temp.Y >= 0 && temp.Y < height)
-                    return temp.ToPoint();
-                return Point.Zero;
+                return CONTENT_MANAGER.currentInputState.mouseState.RightButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.RightButton == ButtonState.Pressed;
             }
 
             /// <summary>

@@ -10,9 +10,9 @@ using Utilities.Drawing.Animation;
 namespace Utilities
 {
     //singleton to store common data
-    public static class CONTENT_MANAGER
+    public static partial class CONTENT_MANAGER
     {
-        public static Game gameinstance;
+        public static Game gameInstance;
 
         #region resources
         public static ContentManager Content;
@@ -35,20 +35,22 @@ namespace Utilities
         {
             LoadFont();
 
+            LoadSpriteSheet();
+
             LoadAnimationContent();
 
             LoadSound();
         }
 
-        private static void LoadSpriteSheet()
-        {
-            spriteSheet = Content.Load<Texture2D>(@"sprite\sprite_sheet");
-            UIspriteSheet = Content.Load<Texture2D>(@"sprite\ui_sprite_sheet");
-        }
-
         private static void LoadFont()
         {
             defaultfont = Content.Load<SpriteFont>(@"font\default_font");
+        }
+
+        private static void LoadSpriteSheet()
+        {
+            //spriteSheet = Content.Load<Texture2D>(@"sprite\sprite_sheet");
+            //UIspriteSheet = Content.Load<Texture2D>(@"sprite\ui_sprite_sheet");
         }
 
         private static void LoadAnimationContent()
@@ -74,7 +76,7 @@ namespace Utilities
         public static RasterizerState antialiasing = new RasterizerState { MultiSampleAntiAlias = true };
 
         private static InputState _inputState;
-        public static InputState inputState
+        public static InputState currentInputState
         {
             get
             {

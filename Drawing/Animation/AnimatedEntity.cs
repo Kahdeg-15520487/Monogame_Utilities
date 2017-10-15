@@ -159,7 +159,7 @@ namespace Utilities.Drawing.Animation
             else
             {
                 // Otherwise we tell are computer to yell at us
-                Utility.HelperFunction.Log(new ApplicationException("Animation Key is already contained in the Dictionary"));
+                //log stuff
             }
         }
         public void AddAnimation(params Animation[] anims)
@@ -175,7 +175,7 @@ namespace Utilities.Drawing.Animation
                 else
                 {
                     // Otherwise we tell are computer to yell at us
-                    Utility.HelperFunction.Log(new ApplicationException("Animation Key is already contained in the Dictionary"));
+                    //log stuff
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace Utilities.Drawing.Animation
                 else
                 {
                     // Otherwise we tell are computer to yell at us
-                    Utility.HelperFunction.Log(new ApplicationException("Animation Key is already contained in the Dictionary"));
+                    //log stuff
                 }
             }
         }
