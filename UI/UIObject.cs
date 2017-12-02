@@ -1,18 +1,33 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Linq;
 using Microsoft.Xna.Framework.Input.Touch;
+
+using Utilities.Drawing;
+
 
 //Z̷̪̰̩̠̈́͑͑̇͛Å̖̯̺̜͗L͖̬̗͚ͥ̔͞G͕̝̥͊̋͐ͬͥ͊̑͜O͔͉̻̪̾͛̄̇ ̜ͨͣͧ͛̄̈́!̰͙̦̦̱̲̬̓̓ͥͯͬ̒͌ ̺̭͖̘͞h̺̮̣͎ͦ̓͑ḛ̗̰ͬ̌̓̂̊̚ ̰̥̱͕ͫ̔c͂̐ͤͧ́͗̍o̴̫͙̘͈͍͙ͫm̗̖͑̀ͧͮ͜e̜̺͈͎̬͔͌́̐̈́̅̔͂
 
-namespace Utilities.UIClass
+namespace Utilities.UI
 {
     public abstract class UIObject : IUIEvent
     {
-        public Rectangle rect = new Rectangle();
+        private UIObject _container = null;
+        public UIObject Container
+        {
+            get { return _container; }
+            set
+            {
+                _container = value;             //assign the elment to a container
+                this.Position = this.Position;  //recalculate the element's position in relative to its container
+            }
+        }
+
+        public Rectangle rect = Rectangle.Empty;
 
         protected Vector2 origin = Vector2.Zero;
         /// <summary>
@@ -26,9 +41,12 @@ namespace Utilities.UIClass
             }
             set
             {
-                rect.Location = value;
+                rect.Location = _container == null ? value : new Point(_container.Position.X + value.X, _container.Position.Y + value.Y);
+                IsDrawDebug = isDrawDebug;
             }
         }
+        public HorizontalAlignment HorizontalAlignment = HorizontalAlignment.Center;
+        public VerticalAlignment VerticalAlignment = VerticalAlignment.Center;
         /// <summary>
         /// The size of the UI element a.k.a where the bottom right corner of this element should be offset by the position
         /// </summary>
@@ -41,6 +59,7 @@ namespace Utilities.UIClass
             set
             {
                 rect.Size = (value.X > 0 && value.Y > 0) ? value.ToPoint() : rect.Size;
+                IsDrawDebug = isDrawDebug;
             }
         }
 
@@ -72,25 +91,71 @@ namespace Utilities.UIClass
             }
         }
 
+        private DrawingHelper.Rectangle debugRect = null;
+        private bool isDrawDebug = false;
+        public bool IsDrawDebug
+        {
+            get
+            {
+                return isDrawDebug;
+            }
+            set
+            {
+                isDrawDebug = value;
+                if (debugRect != null)
+                    debugRect.IsVisible = value;
+                if (isDrawDebug)
+                {
+                    if (DrawingHelper.ContainShape(debugRect))
+                    {
+                        debugRect.rectangle = rect;
+                    }
+                    else
+                    {
+                        debugRect = DrawingHelper.GetRectangle(rect, Color.Red, false);
+                        DrawingHelper.DrawShape(debugRect);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// This must be assign with a font
         /// </summary>
-        public SpriteFont font { get; set; }
+        public SpriteFont Font { get; set; }
+
         /// <summary>
         /// Color of the background of the control.
         /// Default color is Transparent
         /// </summary>
-        public Color backgroundColor = Color.Transparent;
+        public virtual Color BackgroundColor
+        {
+            get => backgroundColor;
+            set => backgroundColor = value;
+        }
+        private Color backgroundColor = Color.Transparent;
+
         /// <summary>
         /// Color of the text that the control displays.
         /// Default color is Black
         /// </summary>
+        public Color ForegroundColor
+        {
+            get => foregroundColor;
+            set => foregroundColor = value;
+        }
         public Color foregroundColor = Color.Black;
+
         /// <summary>
         /// Color of the control's border.
         /// Default color is Transparent
         /// </summary>
-        public Color borderColor = Color.Transparent;
+        public Color BorderColor
+        {
+            get => borderColor;
+            set => borderColor = value;
+        }
+        private Color borderColor = Color.Transparent;
         /// <summary>
         /// Background color of the control when got focus.
         /// Default color is Transparent
@@ -108,14 +173,8 @@ namespace Utilities.UIClass
         /// </summary>
         public float Rotation
         {
-            get
-            {
-                return rotation;
-            }
-            set
-            {
-                rotation = value;
-            }
+            get => rotation;
+            set => rotation = value;
         }
         protected float scale = 1.0f;
         /// <summary>
@@ -124,10 +183,7 @@ namespace Utilities.UIClass
         /// </summary>
         public virtual float Scale
         {
-            get
-            {
-                return scale;
-            }
+            get => scale;
             set
             {
                 scale = value;
@@ -135,7 +191,13 @@ namespace Utilities.UIClass
             }
         }
 
-        public virtual void Update(InputState currentInputState, InputState lastInputState)
+        public object  MetaData { get; set; } = null;
+
+        private bool isDraging = false;
+        private Point drag_start;
+        private Point drag_end;
+
+        public virtual void Update(GameTime gameTime, InputState currentInputState, InputState lastInputState)
         {
             UIEventArgs arg = new UIEventArgs(currentInputState, lastInputState);
 
@@ -173,6 +235,12 @@ namespace Utilities.UIClass
                 || rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
             {
                 OnMouseDown(this, arg);
+                if (!isDraging)
+                {
+                    isDraging = true;
+                    //get mouse absolute position
+                    drag_start = arg.currentMouseState.Position;
+                }
             }
 
             //MouseUp
@@ -181,6 +249,15 @@ namespace Utilities.UIClass
                     && currentInputState.mouseState.LeftButton == ButtonState.Released))
             {
                 OnMouseUp(this, arg);
+                if (isDraging)
+                {
+                    isDraging = false;
+                    //get mouse absolute position
+                    drag_end = arg.currentMouseState.Position;
+                    //convert to size
+                    drag_end = new Point(drag_end.X - drag_start.X, drag_end.Y - drag_start.Y);
+                    OnMouseDrag(this, new Rectangle(drag_start, drag_end));
+                }
             }
 
             //MouseEnter
@@ -202,7 +279,8 @@ namespace Utilities.UIClass
             }
 
             //MouseHover
-            if (rect.Contains(currentInputState.mouseState.Position))
+            if (rect.Contains(currentInputState.mouseState.Position)
+                || rect.Contains(currentInputState.touchState.FirstOrDefault().Position))
             {
                 OnMouseHover(this, arg);
             }
@@ -213,11 +291,13 @@ namespace Utilities.UIClass
                 OnKeyPress(this, arg);
             }
         }
-        public abstract void Draw(SpriteBatch spriteBatch);
+
+        public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
 
         public event EventHandler<UIEventArgs> MouseClick;
         public event EventHandler<UIEventArgs> MouseDown;
         public event EventHandler<UIEventArgs> MouseUp;
+        public event EventHandler<Rectangle> MouseDrag;
         public event EventHandler<UIEventArgs> MouseHover;
         public event EventHandler<UIEventArgs> MouseEnter;
         public event EventHandler<UIEventArgs> MouseLeave;
@@ -239,6 +319,11 @@ namespace Utilities.UIClass
         protected virtual void OnMouseUp(object sender, UIEventArgs e)
         {
             MouseUp?.Invoke(sender, e);
+        }
+
+        protected virtual void OnMouseDrag(object sender,Rectangle e)
+        {
+            MouseDrag?.Invoke(sender, e);
         }
 
         protected virtual void OnMouseHover(object sender, UIEventArgs e)
@@ -277,6 +362,7 @@ namespace Utilities.UIClass
         event EventHandler<UIEventArgs> MouseClick;
         event EventHandler<UIEventArgs> MouseDown;
         event EventHandler<UIEventArgs> MouseUp;
+        event EventHandler<Rectangle> MouseDrag;
         event EventHandler<UIEventArgs> MouseHover;
         event EventHandler<UIEventArgs> MouseEnter;
         event EventHandler<UIEventArgs> MouseLeave;

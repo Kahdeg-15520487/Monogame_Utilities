@@ -5,7 +5,7 @@ using Utilities.Drawing;
 
 namespace Utilities
 {
-    namespace UIClass
+    namespace UI
     {
         public class Label : UIObject
         {
@@ -25,20 +25,29 @@ namespace Utilities
                 }
                 set
                 {
-                    text = string.IsNullOrEmpty(value) ? text : value;
+                    text = string.IsNullOrEmpty(value) ? "" : value;
+                }
+            }
+
+            public override Point Position
+            {
+                get => base.Position;
+                set
+                {
+                    base.Position = value;
+                    //background.rectangle.Location = value;
+                    //border.rectangle.Location = value;
                 }
             }
 
             public override Vector2 Size
             {
-                get
-                {
-                    return base.Size;
-                }
-
+                get => base.Size;
                 set
                 {
                     base.Size = value;
+                    //background.rectangle.Size = value.ToPoint();
+                    //border.rectangle.Size = value.ToPoint();
                 }
             }
             /// <summary>
@@ -46,17 +55,14 @@ namespace Utilities
             /// </summary>
             public Vector2 Origin
             {
-                get
-                {
-                    return origin;
-                }
-                set
-                {
-                    origin = value;
-                }
+                get => origin;
+                set => origin = value;
             }
 
             public float Depth { get; set; } = LayerDepth.GuiUpper;
+
+            protected DrawingHelper.Rectangle background;
+            protected DrawingHelper.Rectangle border;
 
             public Label()
             {
@@ -65,15 +71,17 @@ namespace Utilities
 
             public Label(string text, Point position, Vector2 size, SpriteFont font)
             {
+                //Init();
                 Text = text;
                 Position = position;
                 Size = size;
-                this.font = font;
+                Font = font;
                 origin = new Vector2(rect.X, rect.Y) + Size / 4;
             }
 
             public Label(string text, Point position, Vector2? size, SpriteFont font, float _scale)
             {
+                //Init();
                 Text = text;
                 Position = position;
                 if (size != null)
@@ -85,15 +93,22 @@ namespace Utilities
                     Size = font.MeasureString(text);
                     origin = position.ToVector2();
                 }
-                this.font = font;
+                Font = font;
                 Scale = _scale;
             }
 
-            public override void Draw(SpriteBatch spriteBatch)
+            private void Init()
             {
-                spriteBatch.DrawString(font != null ? font : CONTENT_MANAGER.defaultfont, (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() - origin, foregroundColor, Rotation, Vector2.Zero, scale, SpriteEffects.None, Depth);
-                DrawingHelper.DrawRectangle(rect, backgroundColor, true);
-                DrawingHelper.DrawRectangle(rect, borderColor, false);
+                background = DrawingHelper.GetRectangle(rect, BackgroundColor, true);
+                border = DrawingHelper.GetRectangle(rect, BorderColor, false);
+                DrawingHelper.DrawShape(background);
+                DrawingHelper.DrawShape(border);
+                CONTENT_MANAGER.Log("lala");
+            }
+
+            public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+            {
+                spriteBatch.DrawString(Font ?? CONTENT_MANAGER.fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() - origin, foregroundColor, Rotation, Vector2.Zero, scale, SpriteEffects.None, Depth);
             }
         }
     }

@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Utilities
 {
@@ -9,207 +10,169 @@ namespace Utilities
     {
         public static class DrawingHelper
         {
-            public static PrimitiveBatch primitiveBatch;
+            public abstract class Shape { public bool IsVisible { get; set; } = true; }
 
-            public static void Initialize(GraphicsDevice device)
+            public class Point : Shape
             {
-                DrawingHelper.primitiveBatch = new PrimitiveBatch(device);
+                public Vector2 position;
+                public Color color;
+                public Point(Vector2 p, Color c) { position = p; color = c; }
             }
 
-            public static void Begin(PrimitiveType primitiveType)
+            public class Line : Shape
             {
-                DrawingHelper.primitiveBatch.Begin(primitiveType);
+                public Vector2 start;
+                public Vector2 end;
+                public Color color;
+                public float thickness;
+                public Line(Vector2 s, Vector2 e, Color c, float t) { start = s; end = e; color = c; thickness = t; }
             }
 
-            public static void End()
+            public class Rectangle : Shape
             {
-                DrawingHelper.primitiveBatch.End();
+                public Microsoft.Xna.Framework.Rectangle rectangle;
+                public Color color;
+                public float thickness;
+                public bool fill;
+                public Rectangle(Microsoft.Xna.Framework.Rectangle r, Color c, float t, bool f) { rectangle = r; color = c; thickness = t; fill = f; }
             }
 
-            public static void DrawPoint(Vector2 vertex, Color color)
+            public class Circle : Shape
             {
-                DrawingHelper.primitiveBatch.AddVertex(vertex, color);
+                public Vector2 center;
+                public float radius;
+                public int side;
+                public Color color;
+                public float thickness;
+                public Circle(Vector2 ce, float r, int s, Color c, float t) { center = ce; radius = r; side = s; color = c; thickness = t; }
             }
 
-            public static void DrawLine(Vector2 start, Vector2 end, Color color)
+            static List<Shape> shape_list = new List<Shape>();
+
+            public static void ClearShapeList()
             {
-                DrawingHelper.primitiveBatch.AddVertex(start, color);
-                DrawingHelper.primitiveBatch.AddVertex(end, color);
+                shape_list.Clear();
             }
 
-            public static void DrawRectangle(Rectangle rect, Color color, bool fill)
+            /// <summary>
+            /// Add a shape for drawing
+            /// </summary>
+            /// <param name="shape"></param>
+            public static void DrawShape(Shape shape)
             {
-                if (fill)
+                shape_list.Add(shape);
+            }
+
+            /// <summary>
+            /// check if shape is already added
+            /// </summary>
+            /// <param name="shape"></param>
+            /// <returns></returns>
+            public static bool ContainShape(Shape shape)
+            {
+                return shape_list.Contains(shape);
+            }
+
+            public static void RemoveShape(Shape shape)
+            {
+                shape_list.Remove(shape);
+            }
+
+            /// <summary>
+            /// Add a point for drawing
+            /// </summary>
+            /// <param name="point"></param>
+            /// <param name="color"></param>
+            public static void DrawPoint(Vector2 point, Color color)
+            {
+                shape_list.Add(new Point(point, color));
+            }
+
+            /// <summary>
+            /// Instantiate a point
+            /// </summary>
+            /// <param name="point"></param>
+            /// <param name="color"></param>
+            /// <returns></returns>
+            public static Point GetPoint(Vector2 point, Color color)
+            {
+                return new Point(point, color);
+            }
+
+            public static void DrawLine(Vector2 start, Vector2 end, Color color, float thickness)
+            {
+                shape_list.Add(new Line(start, end, color, thickness));
+            }
+
+            public static Line GetLine(Vector2 start, Vector2 end, Color color, float thickness)
+            {
+                return new Line(start, end, color, thickness);
+            }
+
+            public static void DrawRectangle(Microsoft.Xna.Framework.Rectangle rect, Color color, bool fill, float thickness = 1f)
+            {
+                shape_list.Add(new Rectangle(rect, color, thickness, fill));
+            }
+
+            public static Rectangle GetRectangle(Microsoft.Xna.Framework.Rectangle rect, Color color, bool fill, float thickness = 1f)
+            {
+                return new Rectangle(rect, color, thickness, fill);
+            }
+
+            public static void DrawRectangle(Microsoft.Xna.Framework.Point position, Microsoft.Xna.Framework.Point size, Color color, bool fill, float thickness = 1f)
+            {
+                shape_list.Add(new Rectangle(new Microsoft.Xna.Framework.Rectangle(position, size), color, thickness, fill));
+            }
+
+            public static Rectangle GetRectangle(Microsoft.Xna.Framework.Point position, Microsoft.Xna.Framework.Point size, Color color, bool fill, float thickness = 1f)
+            {
+                return new Rectangle(new Microsoft.Xna.Framework.Rectangle(position, size), color, thickness, fill);
+            }
+
+            public static void DrawRectangle(int x1, int y1, int x2, int y2, Color color, bool fill, float thickness = 1f)
+            {
+                shape_list.Add(new Rectangle(new Microsoft.Xna.Framework.Rectangle(x1, y1, x2, y2), color, thickness, fill));
+            }
+
+            public static Rectangle GetRectangle(int x1, int y1, int x2, int y2, Color color, bool fill, float thickness = 1f)
+            {
+                return new Rectangle(new Microsoft.Xna.Framework.Rectangle(x1, y1, x2, y2), color, thickness, fill);
+            }
+
+            public static void DrawCircle(Vector2 center, float radius, Color color, float thickness = 1f)
+            {
+                shape_list.Add(new Circle(center, radius, 1, color, thickness));
+            }
+
+            public static Circle GetCircle(Vector2 center, float radius, Color color, float thickness = 1f)
+            {
+                return new Circle(center, radius, 1, color, thickness);
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                foreach (Shape shape in shape_list)
                 {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(rect.Left, rect.Top, color);
-                    DrawingHelper.primitiveBatch.AddVertex(rect.Right, rect.Top, color);
-                    DrawingHelper.primitiveBatch.AddVertex(rect.Left, rect.Bottom, color);
-                    DrawingHelper.primitiveBatch.AddVertex(rect.Right, rect.Bottom, color);
-                    DrawingHelper.primitiveBatch.End();
-                    return;
-                }
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X, rect.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X + rect.Width, rect.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X + rect.Width, rect.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X + rect.Width, rect.Y + rect.Height, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X + rect.Width, rect.Y + rect.Height, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X, rect.Y + rect.Height, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X, rect.Y + rect.Height, color);
-                DrawingHelper.primitiveBatch.AddVertex(rect.X, rect.Y, color);
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawRectangle(Vector2 position, Vector2 size, Color color, bool fill)
-            {
-                if (fill)
-                {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                    DrawingHelper.primitiveBatch.End();
-                    return;
-                }
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawRectangle(Point position, Point size, Color color, bool fill)
-            {
-                if (fill)
-                {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                    DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                    DrawingHelper.primitiveBatch.End();
-                    return;
-                }
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X + size.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y + size.Y, color);
-                DrawingHelper.primitiveBatch.AddVertex(position.X, position.Y, color);
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawRectangle(int x1, int y1, int x2, int y2, Color color, bool fill)
-            {
-                if (fill)
-                {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                    DrawingHelper.primitiveBatch.End();
-                    return;
-                }
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawRectangle(float x1, float y1, float x2, float y2, Color color, bool fill)
-            {
-                if (fill)
-                {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                    DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                    DrawingHelper.primitiveBatch.End();
-                    return;
-                }
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y1, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x2, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y2, color);
-                DrawingHelper.primitiveBatch.AddVertex(x1, y1, color);
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawCircle(Vector2 center, float radius, Color color, bool fill)
-            {
-                if (fill)
-                {
-                    DrawingHelper.DrawNGon(center, radius, 663, color, fill);
-                    return;
-                }
-                DrawingHelper.DrawNGon(center, radius, 997, color, fill);
-            }
-
-            public static void DrawNGon(Vector2 center, float radius, int numSides, Color color, bool fill)
-            {
-                if (numSides < 3)
-                {
-                    return;
-                }
-                if (radius == 0f)
-                {
-                    DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineStrip);
-                    DrawingHelper.primitiveBatch.AddVertex(center, color);
-                }
-                else
-                {
-                    if (fill)
+                    if (shape != null && shape.IsVisible)
                     {
-                        DrawingHelper.primitiveBatch.Begin(PrimitiveType.TriangleStrip);
-                    }
-                    else
-                    {
-                        DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineStrip);
-                    }
-                    float num = 6.28318548f;
-                    float num2 = num / (float)numSides;
-                    int num3 = 0;
-                    for (float num4 = 0f; num4 <= num; num4 += num2)
-                    {
-                        if (fill && num3 % 3 == 0)
+                        if (shape is Point p)
                         {
-                            DrawingHelper.primitiveBatch.AddVertex(center.X, center.Y, color);
+                            spriteBatch.PutPixel(p.position, p.color);
                         }
-                        DrawingHelper.primitiveBatch.AddVertex(center.X + radius * (float)Math.Cos((double)num4), center.Y + radius * (float)Math.Sin((double)num4), color);
-                        num3++;
+                        else if (shape is Line l)
+                        {
+                            spriteBatch.DrawLine(l.start, l.end, l.color, l.thickness);
+                        }
+                        else if (shape is Rectangle r)
+                        {
+                            spriteBatch.DrawRectangle(r.rectangle, r.color, r.thickness);
+                        }
+                        else if (shape is Circle c)
+                        {
+                            spriteBatch.DrawCircle(c.center, c.radius, c.side, c.color, c.thickness);
+                        }
                     }
                 }
-                DrawingHelper.primitiveBatch.End();
-            }
-
-            public static void DrawFastLine(Vector2 start, Vector2 end, Color color)
-            {
-                DrawingHelper.primitiveBatch.Begin(PrimitiveType.LineList);
-                DrawingHelper.primitiveBatch.AddVertex(start, color);
-                DrawingHelper.primitiveBatch.AddVertex(end, color);
-                DrawingHelper.primitiveBatch.End();
             }
         }
     }

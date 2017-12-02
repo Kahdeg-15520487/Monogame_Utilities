@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+
 using Utilities.Drawing.Animation;
+using Utilities.Drawing;
 
 namespace Utilities
 {
@@ -13,70 +13,56 @@ namespace Utilities
     public static partial class CONTENT_MANAGER
     {
         public static Game gameInstance;
+        public static Camera camera;
 
         #region resources
         public static ContentManager Content;
 
-        #region sprite
         public static SpriteBatch spriteBatch;
 
-        public static SpriteFont defaultfont;
+        public static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
 
-        public static Texture2D spriteSheet;
-        public static Texture2D UIspriteSheet;
+        public static Dictionary<string, Texture2D> spriteSheets = new Dictionary<string, Texture2D>();
 
-        #region animation sprite sheet
         public static Dictionary<string, AnimatedEntity> animationEntities;
         public static Dictionary<string, Texture2D> animationSheets;
         public static List<Animation> animationTypes;
-        #endregion
 
-        public static void LoadContent()
+        public static void LoadFont(params string[] fontList)
         {
-            LoadFont();
-
-            LoadSpriteSheet();
-
-            LoadAnimationContent();
-
-            LoadSound();
+            foreach (var font in fontList)
+            {
+                fonts.Add(font, Content.Load<SpriteFont>(string.Format(@"font\{0}", font)));
+            }
         }
 
-        private static void LoadFont()
+        public static void LoadSpriteSheet(params string[] spriteSheetList)
         {
-            defaultfont = Content.Load<SpriteFont>(@"font\default_font");
+            foreach (var spritesheet in spriteSheetList)
+            {
+                spriteSheets.Add(spritesheet, Content.Load<Texture2D>(string.Format(@"sprite\{0}",spritesheet)));
+            }
+
         }
 
-        private static void LoadSpriteSheet()
-        {
-            //spriteSheet = Content.Load<Texture2D>(@"sprite\sprite_sheet");
-            //UIspriteSheet = Content.Load<Texture2D>(@"sprite\ui_sprite_sheet");
-        }
-
-        private static void LoadAnimationContent()
+        public static void LoadAnimationContent(params string[] animationList)
         {
             //string delimit = "Yellow";
-            CONTENT_MANAGER.animationEntities = new Dictionary<string, AnimatedEntity>();
-            CONTENT_MANAGER.animationSheets = new Dictionary<string, Texture2D>();
-            CONTENT_MANAGER.animationTypes = new List<Animation>();
+            animationEntities = new Dictionary<string, AnimatedEntity>();
+            animationSheets = new Dictionary<string, Texture2D>();
+            animationTypes = new List<Animation>();
         }
 
-        #endregion
 
-        #region sound
-
-        private static void LoadSound()
+        public static void LoadSound(params string[] soundlist)
         {
             //menu_select = Content.Load<SoundEffect>(@"sound\sfx\menu_select");
         }
 
         #endregion
-        #endregion
-
-        public static RasterizerState antialiasing = new RasterizerState { MultiSampleAntiAlias = true };
 
         private static InputState _inputState;
-        public static InputState currentInputState
+        public static InputState CurrentInputState
         {
             get
             {
@@ -84,16 +70,16 @@ namespace Utilities
             }
             set
             {
-                lastInputState = _inputState;
+                LastInputState = _inputState;
                 _inputState = value;
             }
         }
-        public static InputState lastInputState { get; private set; }
+        public static InputState LastInputState { get; private set; }
 
         public static void ShowFPS(GameTime gameTime)
         {
             int frameRate = (int)(1 / gameTime.ElapsedGameTime.TotalSeconds);
-            spriteBatch.DrawString(defaultfont, frameRate.ToString(), new Vector2(0, 0), Color.Black);
+            spriteBatch.DrawString(fonts["defaultFont"], frameRate.ToString(), new Vector2(0, 0), Color.Black);
         }
     }
 }

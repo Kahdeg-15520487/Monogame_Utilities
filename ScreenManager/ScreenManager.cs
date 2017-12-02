@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Utilities
 {
@@ -120,12 +121,12 @@ namespace Utilities
                 }
             }
 
-            static public void Draw(GameTime gameTime)
+            static public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
             {
                 if (_started == false) return;
                 if (ActiveScreen != null)
                 {
-                    ActiveScreen.Draw(gameTime);
+                    ActiveScreen.Draw(spriteBatch, gameTime);
                 }
             }
         }

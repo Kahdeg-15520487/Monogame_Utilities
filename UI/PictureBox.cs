@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Utilities.UIClass
+namespace Utilities.UI
 {
     class PictureBox : UIObject
     {
@@ -18,6 +18,7 @@ namespace Utilities.UIClass
             set
             {
                 texture2D = value;
+                Size = value.Bounds.Size.ToVector2();
             }
         }
 
@@ -33,6 +34,7 @@ namespace Utilities.UIClass
             set
             {
                 sourceRectangle = value;
+                Size = value.Size.ToVector2();
             }
         }
 
@@ -53,47 +55,11 @@ namespace Utilities.UIClass
             this.sourceRectangle = sourceRectangle;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public Vector2 VectorScale { get; set; } = new Vector2(1, 1);
+
+        public override void Draw(SpriteBatch spriteBatch,GameTime gameTime)
         {
             spriteBatch.Draw(texture2D, Position.ToVector2(), sourceRectangle, Color.White, Rotation, origin, Scale, SpriteEffects.None, Depth);
-        }
-
-        public override Vector2 Size
-        {
-            get
-            {
-                return base.Size;
-            }
-
-            set
-            {
-                base.Size = value;
-            }
-        }
-        public override float Scale
-        {
-            get
-            {
-                return base.Scale;
-            }
-
-            set
-            {
-                base.Scale = value;
-            }
-        }
-        public override Point Position
-        {
-            get
-            {
-                return base.Position;
-            }
-
-            set
-            {
-                base.Position = value;
-            }
-        }
-        
+        }        
     }
 }

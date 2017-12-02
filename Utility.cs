@@ -23,19 +23,34 @@ namespace Utilities
                 return (float)(Math.PI * angle / 180.0f);
             }
 
+            public static bool IsKeyDown(Keys k)
+            {
+                return CONTENT_MANAGER.CurrentInputState.keyboardState.IsKeyDown(k);
+            }
+
+            public static bool IsKeyDown(params Keys[] ks)
+            {
+                return ks.All(IsKeyDown);
+            }
+
             public static bool IsKeyPress(Keys k)
             {
-                return CONTENT_MANAGER.currentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.lastInputState.keyboardState.IsKeyDown(k);
+                return CONTENT_MANAGER.CurrentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.LastInputState.keyboardState.IsKeyDown(k);
+            }
+
+            public static bool IsKeyPress(params Keys[] ks)
+            {
+                return ks.All(IsKeyPress);
             }
 
             public static bool IsLeftMousePressed()
             {
-                return CONTENT_MANAGER.currentInputState.mouseState.LeftButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.LeftButton == ButtonState.Pressed;
+                return CONTENT_MANAGER.CurrentInputState.mouseState.LeftButton == ButtonState.Released && CONTENT_MANAGER.LastInputState.mouseState.LeftButton == ButtonState.Pressed;
             }
 
             public static bool IsRightMousePressed()
             {
-                return CONTENT_MANAGER.currentInputState.mouseState.RightButton == ButtonState.Released && CONTENT_MANAGER.lastInputState.mouseState.RightButton == ButtonState.Pressed;
+                return CONTENT_MANAGER.CurrentInputState.mouseState.RightButton == ButtonState.Released && CONTENT_MANAGER.LastInputState.mouseState.RightButton == ButtonState.Pressed;
             }
 
             /// <summary>
@@ -127,6 +142,11 @@ namespace Utilities
                 }
 
                 return result;
+            }
+
+            public static Point OffsetPoint(Rectangle root, Rectangle p, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center)
+            {
+                return Point.Zero;
             }
         }
 

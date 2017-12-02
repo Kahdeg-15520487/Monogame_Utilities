@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Utilities.Drawing.Animation
 {
-    public class AnimatedEntity : ICloneable
+    public class AnimatedEntity
     {
         #region Fields
 
@@ -91,7 +91,7 @@ namespace Utilities.Drawing.Animation
 
         public AnimatedEntity()
         {
-            animations = new Dictionary<string, Animation>(24);
+            animations = new Dictionary<string, Animation>();
             spriteSheet = null;
             position = Vector2.Zero;
             origin = Vector2.Zero;
@@ -104,7 +104,7 @@ namespace Utilities.Drawing.Animation
         public AnimatedEntity(Vector2 position,Vector2 origin, Color? tintColor, float depth, float scale = 1)
         {
             //Initialize the Dictionary
-            animations = new Dictionary<string, Animation>(24);
+            animations = new Dictionary<string, Animation>();
             spriteSheet = null;
             this.origin = origin;
             rotation = 0;
@@ -160,6 +160,7 @@ namespace Utilities.Drawing.Animation
             {
                 // Otherwise we tell are computer to yell at us
                 //log stuff
+                CONTENT_MANAGER.Log("duplicate animation : " + animation.Name);
             }
         }
         public void AddAnimation(params Animation[] anims)
@@ -176,6 +177,7 @@ namespace Utilities.Drawing.Animation
                 {
                     // Otherwise we tell are computer to yell at us
                     //log stuff
+                    CONTENT_MANAGER.Log("duplicate animation : " + animation.Name);
                 }
             }
         }
@@ -193,7 +195,25 @@ namespace Utilities.Drawing.Animation
                 {
                     // Otherwise we tell are computer to yell at us
                     //log stuff
+                    CONTENT_MANAGER.Log("duplicate animation : " + animation.Name);
                 }
+            }
+        }
+
+        public bool ContainAnimation(string animationName)
+        {
+            return animations.ContainsKey(animationName);
+        }
+
+        public void RemoveAnimation(string animationName)
+        {
+            if (animations.ContainsKey(animationName))
+            {
+                animations.Remove(animationName);
+            }
+            else
+            {
+                CONTENT_MANAGER.Log("animation doesn't exist : " + animationName);
             }
         }
 
@@ -204,15 +224,23 @@ namespace Utilities.Drawing.Animation
         public void PlayAnimation(string key)
         {
             if (string.IsNullOrEmpty(key) || !animations.ContainsKey(key))
-                return;
-
-            if (currentAnimation != null)
             {
-                if (currentAnimation.Name == key)
-                {
-                    return;
-                }
+                CONTENT_MANAGER.Log(key + "not found");
+                return;
             }
+
+            //TODO find the meaning of the following code
+
+            //if (currentAnimation != null)
+            //{
+            //    if (currentAnimation.Name == key)
+            //    {
+            //        if (animations.ContainsKey(key))
+            //        {
+            //            return;
+            //        }
+            //    }
+            //}
 
             isPlaying = true;
 
@@ -275,11 +303,6 @@ namespace Utilities.Drawing.Animation
                 spriteBatch.Draw(spriteSheet, position, currentAnimation.CurntKeyFrame.Source, tintColor,
                     rotation, origin, scale, flipEffect, depth);
             }
-        }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
         }
 
         #endregion

@@ -54,7 +54,7 @@ namespace Utilities.Drawing
                 _rotation = value;
             }
         }
-        
+
         private Rectangle _bounds { get; set; }
 
         public Matrix TransformMatrix

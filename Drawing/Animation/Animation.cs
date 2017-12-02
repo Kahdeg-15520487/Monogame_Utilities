@@ -8,7 +8,7 @@ namespace Utilities.Drawing.Animation
     /// <summary>
     /// Contains the data needed to animate a series of frames defined in a texture
     /// </summary>
-    public sealed class Animation : ICloneable
+    public sealed class Animation
     {
         #region Fields
 
@@ -82,17 +82,6 @@ namespace Utilities.Drawing.Animation
 
         #region Constructor
 
-        public Animation()
-        {
-            name = string.Empty;
-            shouldLoop = false;
-            isComplete = false;
-            framesPerSecond = 0;
-            timePerFrame = 0;
-            totalElapsedTime = 0;
-            currentFrame = -1;
-            keyFrames = new List<Frame>();
-        }
         public Animation(string name, bool shouldLoop, float framesPerSecond, string transitionKey)
         {
             this.name = name;
@@ -174,11 +163,6 @@ namespace Utilities.Drawing.Animation
                 //totalElapsedTime -= totalElapsedTime;
                 totalElapsedTime = 0;
             }
-        }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
         }
 
         #endregion

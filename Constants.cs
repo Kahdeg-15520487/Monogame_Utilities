@@ -20,6 +20,15 @@
         Void
     }
 
+    public enum HorizontalAlignment
+    {
+        Top, Center, Bottom
+    }
+    public enum VerticalAlignment
+    {
+        Left, Center, Right
+    }
+
     public static class Constants
     {
         public static int Width { get; set; }
