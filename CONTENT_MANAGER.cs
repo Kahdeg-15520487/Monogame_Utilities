@@ -28,6 +28,9 @@ namespace Utilities
         public static Dictionary<string, Texture2D> animationSheets;
         public static List<Animation> animationTypes;
 
+		/// <summary>
+		/// Load font that is located in Content\font\
+		/// </summary>
         public static void LoadFont(params string[] fontList)
         {
             foreach (var font in fontList)
@@ -36,7 +39,10 @@ namespace Utilities
             }
         }
 
-        public static void LoadSpriteSheet(params string[] spriteSheetList)
+		/// <summary>
+		/// Load spritesheet that is located in Content\sprite\
+		/// </summary>
+		public static void LoadSpriteSheet(params string[] spriteSheetList)
         {
             foreach (var spritesheet in spriteSheetList)
             {
@@ -53,8 +59,10 @@ namespace Utilities
             animationTypes = new List<Animation>();
         }
 
-
-        public static void LoadSound(params string[] soundlist)
+		/// <summary>
+		/// Load sound effect that is located in Content\sfx\
+		/// </summary>
+		public static void LoadSound(params string[] soundlist)
         {
             //menu_select = Content.Load<SoundEffect>(@"sound\sfx\menu_select");
         }
