@@ -134,11 +134,27 @@ namespace Utilities.Drawing.Animation
             //Load our sprite sheet texture
             spriteSheet = content.Load<Texture2D>(textureAssetName);
         }
-        public void LoadContent(Texture2D spriteSheet)
+		/// <summary>
+		/// Loads the sprite sheet texture
+		/// </summary>
+		/// <param name="spriteSheet">spritesheet to be load</param>
+		public void LoadContent(Texture2D spriteSheet)
         {
             //Set our sprite sheet texture
             this.spriteSheet = spriteSheet;
         }
+		/// <summary>
+		/// Loads the sprite sheet texture and assign keyframe
+		/// </summary>
+		/// <param name="spriteSheetMap">spriteSheetMap to be load from</param>
+		public void LoadContent(SpriteSheetMap spriteSheetMap,bool shouldLoop,float fps) {
+			spriteSheet = spriteSheetMap.SpriteSheet;
+			Animation animation = new Animation(spriteSheetMap.SpriteSheetName, shouldLoop, fps, null);
+			foreach (var rect in spriteSheetMap.SpriteRect) {
+				animation.AddKeyFrame(rect);
+			}
+			AddAnimation(animation);
+		}
 
         #endregion
 
@@ -229,20 +245,17 @@ namespace Utilities.Drawing.Animation
                 return;
             }
 
-            //TODO find the meaning of the following code
+			//TODO find the meaning of the following code
 
-            //if (currentAnimation != null)
-            //{
-            //    if (currentAnimation.Name == key)
-            //    {
-            //        if (animations.ContainsKey(key))
-            //        {
-            //            return;
-            //        }
-            //    }
-            //}
+			//if (currentAnimation != null) {
+			//	if (currentAnimation.Name == key) {
+			//		if (animations.ContainsKey(key)) {
+			//			return;
+			//		}
+			//	}
+			//}
 
-            isPlaying = true;
+			isPlaying = true;
 
             currentAnimation = animations[key];
             currentAnimation.Reset();
@@ -283,6 +296,9 @@ namespace Utilities.Drawing.Animation
                     {
                         PlayAnimation(currentAnimation.TransitionKey);
                     }
+					else {
+						isPlaying = false;
+					}
                 }
             }
         }

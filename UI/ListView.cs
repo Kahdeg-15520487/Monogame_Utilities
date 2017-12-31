@@ -59,7 +59,7 @@ namespace Utilities.UI
         {
             Point position = new Point(lastPosition.X, lastPosition.Y + Offset.Y);
             lastPosition = position;
-            ListViewItem lvi = new ListViewItem(data, position, listViewItemSize, new Vector2(-2, -2), CONTENT_MANAGER.fonts["defaultFont"])
+            ListViewItem lvi = new ListViewItem(data, position, listViewItemSize, new Vector2(-2, -2), CONTENT_MANAGER.Fonts["defaultFont"])
             {
                 Container = this,
                 MetaData = listViewItems.Count,

@@ -108,7 +108,7 @@ namespace Utilities
 
             public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
             {
-                spriteBatch.DrawString(Font ?? CONTENT_MANAGER.fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() - origin, foregroundColor, Rotation, Vector2.Zero, scale, SpriteEffects.None, Depth);
+                spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() - origin, foregroundColor, Rotation, Vector2.Zero, scale, SpriteEffects.None, Depth);
             }
         }
     }

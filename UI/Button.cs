@@ -216,7 +216,7 @@ namespace Utilities.UI
             switch (contentType)
             {
                 case ButtonContentType.Text:
-                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, foregroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
+                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, foregroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
 
                     DrawingHelper.DrawRectangle(internalRect, isPressed ? buttonColorPressed : buttonColorReleased, true);
                     DrawingHelper.DrawRectangle(rect, BorderColor, false);
