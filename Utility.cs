@@ -41,9 +41,9 @@ namespace Utilities
         public static Vector2 RotateVector(Vector2 vt, float degrees)
         {
             var result = new Vector2(){
-            X = vt.X * Math.Cos(degrees) - vt.Y * Math.Sin(degrees),
-            Y = vt.X * Math.Sin(degrees) + vt.Y * Math.Cos(degrees),
-            }
+            X = vt.X * (float)Math.Cos(degrees) - vt.Y * (float)Math.Sin(degrees),
+            Y = vt.X * (float)Math.Sin(degrees) + vt.Y * (float)Math.Cos(degrees),
+            };
             return result;
         }
 
