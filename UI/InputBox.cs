@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using Utilities.Drawing;
+using Utilities.Utility;
 
 namespace Utilities.UI
 {
