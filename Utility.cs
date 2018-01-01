@@ -38,6 +38,12 @@ namespace Utilities
             return (float)Math.Atan2(vt.Y, vt.X);
         }
         
+        /// <summary>
+		/// Rotate a vector an angle
+		/// </summary>
+		/// <param name="vt"></param>
+		/// <param name="degrees">angle in radian</param>
+		/// <returns></returns>
         public static Vector2 RotateVector(Vector2 vt, float degrees)
         {
             var result = new Vector2(){
