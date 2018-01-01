@@ -37,6 +37,15 @@ namespace Utilities
         public static float AngleOfVector(Vector2 vt) {
             return (float)Math.Atan2(vt.Y, vt.X);
         }
+        
+        public static Vector2 RotateVector(Vector2 vt, float degrees)
+        {
+            var result = new Vector2(){
+            X = vt.X * Math.Cos(degrees) - vt.Y * Math.Sin(degrees),
+            Y = vt.X * Math.Sin(degrees) + vt.Y * Math.Cos(degrees),
+            }
+            return result;
+        }
 
         public static bool IsKeyDown(Keys k)
         {
