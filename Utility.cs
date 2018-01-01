@@ -345,7 +345,7 @@ namespace Utilities
             }
         }
 
-		public static Direction GetDirectionFromPointAtoPointB(this Vector2 pos, Vector2 dir) {
+		public static Direction GetDirectionFromPointAtoPointB(this Vector2 dir,Vector2 pos) {
 			return GetDirectionFromPointAtoPointB(pos.ToPoint(), dir.ToPoint());
 		}
 
