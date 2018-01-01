@@ -26,15 +26,17 @@ namespace Utilities {
 			SpriteSheet = spritesheet;
 			SpriteRect = new List<Rectangle>();
 			SpriteRectDict = new Dictionary<string, int>();
+            var x = SpriteSheet.Width / width;
+            var y = SpriteSheet.Height / height;
 			
 			if (width != 0 && height != 0) {
 				StringBuilder tt = new StringBuilder();
-				tt.AppendFormat("W = {0}; H = {1}", SpriteSheet.Width / width, SpriteSheet.Height / height);
+				tt.AppendFormat("W = {0}; H = {1}",x , y);
 				tt.AppendLine();
-				for (int h = 0; h < SpriteSheet.Height / height; h++) {
-					for (int w = 0; w < SpriteSheet.Width / width; w++) {
-						AddSpriteRect((h * w).ToString() , new Rectangle(w * width, h * height, width, height));
-						tt.Append((h * w) + "    :    ");
+				for (int h = 0; h < y; h++) {
+					for (int w = 0; w < x; w++) {
+						AddSpriteRect((h * y + w).ToString() , new Rectangle(w * width, h * height, width, height));
+						tt.Append((h * y + w) + "    :    ");
 						tt.AppendLine(new Rectangle(w * width, h * height, width, height).ToString());
 					}
 				}
