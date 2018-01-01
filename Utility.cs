@@ -345,7 +345,11 @@ namespace Utilities
             }
         }
 
-        public static Direction GetDirectionFromPointAtoPointB(this Point pA,Point pB)
+		public static Direction GetDirectionFromPointAtoPointB(this Vector2 pos, Vector2 dir) {
+			return GetDirectionFromPointAtoPointB(pos.ToPoint(), dir.ToPoint());
+		}
+
+		public static Direction GetDirectionFromPointAtoPointB(this Point pA,Point pB)
         {
             int deltaX = pA.X - pB.X;
             int deltaY = pA.Y - pB.Y;
