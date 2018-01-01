@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Collections;
 
 namespace Utilities {
-	public class SpriteSheetMap{
+	public class SpriteSheetMap {
 		public readonly string SpriteSheetName;
 		public readonly Texture2D SpriteSheet;
 		public List<Rectangle> SpriteRect;
@@ -18,7 +18,7 @@ namespace Utilities {
 			get { return SpriteRect[SpriteRectDict[index]]; }
 		}
 		public Rectangle this[int index] {
-			get { return SpriteRect[index];  }
+			get { return SpriteRect[index]; }
 		}
 
 		public SpriteSheetMap(string name, Texture2D spritesheet, int width = 0, int height = 0) {
@@ -26,17 +26,19 @@ namespace Utilities {
 			SpriteSheet = spritesheet;
 			SpriteRect = new List<Rectangle>();
 			SpriteRectDict = new Dictionary<string, int>();
-            var x = SpriteSheet.Width / width;
-            var y = SpriteSheet.Height / height;
-			
+			var x = SpriteSheet.Width / width;
+			var y = SpriteSheet.Height / height;
+
 			if (width != 0 && height != 0) {
 				StringBuilder tt = new StringBuilder();
-				tt.AppendFormat("W = {0}; H = {1}",x , y);
+				tt.AppendFormat("W = {0}; H = {1}", SpriteSheet.Width, SpriteSheet.Height);
+				tt.AppendLine();
+				tt.AppendFormat("x = {0}; y = {1}", x, y);
 				tt.AppendLine();
 				for (int h = 0; h < y; h++) {
 					for (int w = 0; w < x; w++) {
-						AddSpriteRect((h * y + w).ToString() , new Rectangle(w * width, h * height, width, height));
-						tt.Append((h * y + w) + "    :    ");
+						AddSpriteRect((h * x + w).ToString(), new Rectangle(w * width, h * height, width, height));
+						tt.Append((h * x + w) + "    :    ");
 						tt.AppendLine(new Rectangle(w * width, h * height, width, height).ToString());
 					}
 				}
@@ -63,7 +65,7 @@ namespace Utilities {
 			return true;
 		}
 
-		public void RenameSpriteRect(string oldname,string newname) {
+		public void RenameSpriteRect(string oldname, string newname) {
 			int spriteindex = SpriteRectDict[oldname];
 			SpriteRectDict.Remove(oldname);
 			SpriteRectDict.Add(newname, spriteindex);
