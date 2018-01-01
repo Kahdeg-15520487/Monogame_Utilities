@@ -33,8 +33,8 @@ namespace Utilities {
 				tt.AppendLine();
 				for (int h = 0; h < SpriteSheet.Height / height; h++) {
 					for (int w = 0; w < SpriteSheet.Width / width; w++) {
-						AddSpriteRect(h + ":" + w , new Rectangle(w * width, h * height, width, height));
-						tt.Append(h + ":" + w + "    :    ");
+						AddSpriteRect((h * w).ToString() , new Rectangle(w * width, h * height, width, height));
+						tt.Append((h * w) + "    :    ");
 						tt.AppendLine(new Rectangle(w * width, h * height, width, height).ToString());
 					}
 				}
