@@ -1,0 +1,87 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{35D95197-C20C-4970-9A06-41B08B1D243C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ClassLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Monogame_Utilities</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="CONTENT_MANAGER.cs" />
+    <Compile Include="Drawing\Animation\AnimatedEntity.cs" />
+    <Compile Include="Drawing\Animation\Animation.cs" />
+    <Compile Include="Drawing\Animation\Frame.cs" />
+    <Compile Include="Drawing\Camera.cs" />
+    <Compile Include="Drawing\DrawingHelper.cs" />
+    <Compile Include="Drawing\Primitive2D.cs" />
+    <Compile Include="Drawing\PrimitiveBatch.cs" />
+    <Compile Include="Drawing\TextRenderer.cs" />
+    <Compile Include="Drawing\TextureRenderer.cs" />
+    <Compile Include="InputState.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="PathFinding\DijikstraHelper.cs" />
+    <Compile Include="PathFinding\dijkstra.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="ScreenManager\Screen.cs" />
+    <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="SpriteSheetMap.cs" />
+    <Compile Include="UI\AnimationPlayer.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\Canvas.cs" />
+    <Compile Include="UI\Grid.cs" />
+    <Compile Include="UI\InputBox.cs" />
+    <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\ListView.cs" />
+    <Compile Include="UI\PictureBox.cs" />
+    <Compile Include="UI\UIObject.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MonoGame.Framework.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
