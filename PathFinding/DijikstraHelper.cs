@@ -2,9 +2,9 @@
 //using System.Linq;
 
 //using Microsoft.Xna.Framework;
-//using Utilities.Utility;
+//using Utility.Utility;
 
-//namespace Utilities.PathFinding {
+//namespace Utility.PathFinding {
 //	static class DijkstraHelper {
 //		public static Graph CalculateGraph(Map map, Unit unit, Point position) {
 

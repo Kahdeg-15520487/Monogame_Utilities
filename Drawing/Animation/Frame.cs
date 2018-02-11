@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Utilities.Drawing.Animation
+namespace Utility.Drawing.Animation
 {
     /// <summary>
     /// Represents a single frame in an animation

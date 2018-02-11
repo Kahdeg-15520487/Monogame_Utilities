@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
-namespace Utilities.Drawing.Animation
+namespace Utility.Drawing.Animation
 {
     /// <summary>
     /// Contains the data needed to animate a series of frames defined in a texture

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Utilities
+namespace Utility
 {
 	public class Range : IEnumerable<int> {
 		public readonly int Max;

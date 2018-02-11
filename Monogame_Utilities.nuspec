@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Kahdeg-15520487.Monogame_Utilities</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Kahdeg</authors>
+    <owners>Kahdeg</owners>
+    <projectUrl>https://github.com/Kahdeg-15520487/Monogame_Utilities</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A utilities library for Monogame</description>
+    <copyright>Copyright 2018</copyright>
+  </metadata>
+</package>

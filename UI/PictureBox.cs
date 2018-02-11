@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Utilities.UI
-{
-    class PictureBox : UIObject
+namespace Utility.UI {
+	class PictureBox : UIObject
     {
         private Texture2D texture2D;
 
@@ -18,7 +18,9 @@ namespace Utilities.UI
             set
             {
                 texture2D = value;
-                Size = value.Bounds.Size.ToVector2();
+				if (value != null) {
+					Size = value.Bounds.Size.ToVector2();
+				}
             }
         }
 
@@ -55,7 +57,17 @@ namespace Utilities.UI
             this.sourceRectangle = sourceRectangle;
         }
 
-        public Vector2 VectorScale { get; set; } = new Vector2(1, 1);
+		public PictureBox(Point position, Rectangle? sourceRectangle, Vector2? origin, float rotation = 0f, float scale = 1f, float depth = 0f) {
+			Texture2D = null;
+			Position = position;
+			Rotation = rotation;
+			Scale = scale;
+			Depth = depth;
+			this.origin = origin ?? Vector2.Zero;
+			this.sourceRectangle = sourceRectangle;
+		}
+
+		public Vector2 VectorScale { get; set; } = new Vector2(1, 1);
 
         public override void Draw(SpriteBatch spriteBatch,GameTime gameTime)
         {

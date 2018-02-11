@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Utilities.Drawing
+namespace Utility.Drawing
 {
     /// <summary>
     /// Copyright (c) 2012 John McDonald and Gary Texmo

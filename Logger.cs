@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Utilities {
+namespace Utility {
 	public partial class CONTENT_MANAGER  {
 		public static void Log(string data) {
 

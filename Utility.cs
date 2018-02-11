@@ -5,9 +5,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using Utilities.Drawing;
+using Utility.Drawing;
 
-namespace Utilities
+namespace Utility
 {
     public static class HelperFunction
     {

@@ -4,10 +4,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-using Utilities.Drawing.Animation;
-using Utilities.Drawing;
+using Utility.Drawing.Animation;
+using Utility.Drawing;
+using Microsoft.Xna.Framework.Audio;
+using System.IO;
+using System.Reflection;
+using Fclp;
 
-namespace Utilities {
+namespace Utility {
 	//singleton to store common data
 	public static partial class CONTENT_MANAGER {
 		public static Game gameInstance;
@@ -22,7 +26,9 @@ namespace Utilities {
 		public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
 		public static Dictionary<string, Texture2D> Sprites = new Dictionary<string, Texture2D>();
-		public static Dictionary<string, SpriteSheetMap> SpriteSheets = new Dictionary<string, SpriteSheetMap>();
+		//public static Dictionary<string, SpriteSheetMap> SpriteSheets = new Dictionary<string, SpriteSheetMap>();
+
+		public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
 
 		public static Dictionary<string, AnimatedEntity> animationEntities;
 		public static Dictionary<string, Texture2D> animationSheets;
@@ -55,11 +61,11 @@ namespace Utilities {
 		/// <param name="spriteSheet">spritesheet to load</param>
 		/// <param name="width">width of a sprite</param>
 		/// <param name="height">height of a sprite</param>
-		public static SpriteSheetMap LoadSpriteSheet(string spriteSheet, int width = 0, int height = 0) {
-			var spm = new SpriteSheetMap(spriteSheet, Content.Load<Texture2D>(string.Format(@"sprite\{0}", spriteSheet)), width, height);
-			SpriteSheets.Add(spriteSheet, spm);
-			return spm;
-		}
+		//public static SpriteSheetMap LoadSpriteSheet(string spriteSheet, int width = 0, int height = 0) {
+		//	var spm = new SpriteSheetMap(spriteSheet, Content.Load<Texture2D>(string.Format(@"sprite\{0}", spriteSheet)), width, height);
+		//	SpriteSheets.Add(spriteSheet, spm);
+		//	return spm;
+		//}
 
 		public static void LoadAnimationContent(params string[] animationList) {
 			//string delimit = "Yellow";
@@ -71,9 +77,46 @@ namespace Utilities {
 
 		public static void LoadSound(params string[] soundlist) {
 			//menu_select = Content.Load<SoundEffect>(@"sound\sfx\menu_select");
+			foreach (var sound in soundlist) {
+				Sounds.Add(sound, Content.Load<SoundEffect>(string.Format(@"sound\{0}", sound)));
+			}
 		}
 
 		#endregion
+
+
+		public static void BeginSpriteBatch() {
+			spriteBatch.Begin(SpriteSortMode.FrontToBack);
+		}
+		public static void BeginSpriteBatchWithCamera(Camera camera) {
+			spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: camera.TransformMatrix);
+		}
+
+		public static void EndSpriteBatch() {
+			spriteBatch.End();
+		}
+
+		//public static string MapName { get; internal set; } = null;
+
+		//public static void ParseArguments(string[] args) {
+		//	var p = new FluentCommandLineParser();
+		//	p.Setup<string>('m')
+		//		.Callback(x => MapName = x);
+		//	p.Parse(args);
+		//}
+
+		public static string LocalRootPath;
+
+		//todo make internal messagebox
+		public static void ShowMessageBox(object message) {
+
+		}
+
+		//todo make internal messagebox
+		public static string ShowPromptBox(object message) {
+			return string.Empty;
+		}
+
 
 		private static InputState _inputState;
 		public static InputState CurrentInputState {

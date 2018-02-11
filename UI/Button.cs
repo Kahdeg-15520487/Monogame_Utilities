@@ -1,11 +1,11 @@
 ﻿using System;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utilities.Drawing;
+using Utility.Drawing;
 
-namespace Utilities.UI
-{
-    enum ButtonContentType
+namespace Utility.UI {
+	enum ButtonContentType
     {
         Text,
         SpriteFromSheet,
@@ -22,7 +22,7 @@ namespace Utilities.UI
         private bool isPressed = false;
         private Rectangle internalRect;
         private ButtonContentType contentType;
-        private Rectangle? _spriteSourceRectangle = null;
+        private Rectangle? _SpriteSourceRectangle = null;
 
         //Add region to draw text
         private Vector2 stringRect;
@@ -33,11 +33,11 @@ namespace Utilities.UI
         {
             get
             {
-                return _spriteSourceRectangle.GetValueOrDefault();
+                return _SpriteSourceRectangle.GetValueOrDefault();
             }
             set
             {
-                _spriteSourceRectangle = value;
+                _SpriteSourceRectangle = value;
                 rect.Size = (value.X > 0 && value.Y > 0) ? value.Size : rect.Size;
             }
         }
@@ -88,7 +88,7 @@ namespace Utilities.UI
         public float Depth { get; set; } = LayerDepth.GuiUpper;
 
         Color buttonColorPressed = Color.LightSlateGray;
-        Color buttonColorReleased = Color.Transparent;
+        Color buttonColorReleased = Color.White;
         public Color ButtonColorPressed
         {
             get
@@ -130,7 +130,15 @@ namespace Utilities.UI
 
         public Vector2 TextOffset { get; set; }
 
-        public Button()
+		/// <summary>
+		/// Offset of the text inside the button
+		/// </summary>
+		public Vector2 Origin {
+			get { return origin; }
+			set { origin = value; }
+		}
+
+		public Button()
         {
             Init();
         }
@@ -169,10 +177,10 @@ namespace Utilities.UI
         public Button(Texture2D sprite, Rectangle? spriterect, Point position, float scale = 1)
         {
             contentType = ButtonContentType.Texture2D;
-            _spriteSourceRectangle = spriterect;
+            _SpriteSourceRectangle = spriterect;
             this.sprite = sprite;
             Position = position;
-            Size = _spriteSourceRectangle.GetValueOrDefault().Size.ToVector2();
+            Size = _SpriteSourceRectangle.GetValueOrDefault().Size.ToVector2();
             Scale = scale;
             Init();
         }
@@ -216,16 +224,16 @@ namespace Utilities.UI
             switch (contentType)
             {
                 case ButtonContentType.Text:
-                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, foregroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
+                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, ForegroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
 
                     DrawingHelper.DrawRectangle(internalRect, isPressed ? buttonColorPressed : buttonColorReleased, true);
                     DrawingHelper.DrawRectangle(rect, BorderColor, false);
                     break;
                 case ButtonContentType.SpriteFromSheet:
-                    //spriteBatch.Draw(isFromUISpriteSheet ? CONTENT_MANAGER.UIspriteSheet : CONTENT_MANAGER.spriteSheet, Position.ToVector2(), SpriteSourceRectangle, isPressed ? buttonColorPressed : buttonColorReleased, Rotation, Vector2.Zero, Scale, SpriteEffects.None, Depth);
+                    //spriteBatch.Draw(isFromUISpriteSheet ? CONTENT_MANAGER.Sprites["UIspriteSheet"] : CONTENT_MANAGER.Sprites["spriteSheet"], Position.ToVector2(), SpriteSourceRectangle, isPressed ? buttonColorPressed : buttonColorReleased, Rotation, Vector2.Zero, Scale, SpriteEffects.None, Depth);
                     break;
                 case ButtonContentType.Texture2D:
-                    spriteBatch.Draw(sprite, Position.ToVector2(), _spriteSourceRectangle, isPressed ? buttonColorPressed : buttonColorReleased, Rotation, Vector2.Zero, Scale, SpriteEffects.None, Depth);
+                    spriteBatch.Draw(sprite, Position.ToVector2(), _SpriteSourceRectangle, isPressed ? buttonColorPressed : buttonColorReleased, Rotation, Vector2.Zero, Scale, SpriteEffects.None, Depth);
                     break;
                 default:
                     break;

@@ -1,4 +1,4 @@
-﻿namespace Utilities
+﻿namespace Utility
 {
     public static class LayerDepth
     {

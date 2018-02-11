@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Utilities.Drawing.Animation;
+using Utility;
+using Utility.Drawing.Animation;
+using Utility.UI;
 
 namespace Utilities.UI
 {

@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PetGo.Monogame_Utilities.Drawing
+namespace PetGo.Monogame_Utility.Drawing
 {
     public static class TextureRenderer
     {

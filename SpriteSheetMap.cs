@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 
-namespace Utilities {
+namespace Utility {
 	public class SpriteSheetMap {
 		public readonly string SpriteSheetName;
 		public readonly Texture2D SpriteSheet;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Utilities.PathFinding {
+namespace Utility.PathFinding {
 	//actually we need the whole graph after the algorthm calculate the path.
 	public class Graph {
 		//vertex list aka 

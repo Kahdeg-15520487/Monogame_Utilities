@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace Utilities.Drawing
+namespace Utility.Drawing
 {
     public class Camera
     {

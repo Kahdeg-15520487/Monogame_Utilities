@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
-namespace Utilities
+namespace Utility
 {
     public struct InputState
     {
