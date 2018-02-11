@@ -7,9 +7,9 @@
 //using Microsoft.Xna.Framework.Graphics;
 //using Microsoft.Xna.Framework.Input;
 
-//using Utilities.Drawing;
+//using Utility.Drawing;
 
-//namespace Utilities.UI
+//namespace Utility.UI
 //{
 //    public class InputBox : UIObject
 //    {

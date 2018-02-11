@@ -54,6 +54,7 @@
     <Compile Include="Drawing\Animation\AnimatedEntity.cs" />
     <Compile Include="Drawing\Animation\Animation.cs" />
     <Compile Include="Drawing\Animation\Frame.cs" />
+    <Compile Include="Drawing\Animation\SpriteSheetMap.cs" />
     <Compile Include="Drawing\Camera.cs" />
     <Compile Include="Drawing\DrawingHelper.cs" />
     <Compile Include="Drawing\Primitive2D.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="ScreenManager\Screen.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screen\FileBrowsingScreen.cs" />
-    <Compile Include="SpriteSheetMap.cs" />
     <Compile Include="UI\AnimationPlayer.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Canvas.cs" />
