@@ -76,6 +76,7 @@
     <Compile Include="UI\InputBox.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\ListView.cs" />
+    <Compile Include="UI\MessageBox.cs" />
     <Compile Include="UI\PictureBox.cs" />
     <Compile Include="UI\UIObject.cs" />
     <Compile Include="Utility.cs" />
