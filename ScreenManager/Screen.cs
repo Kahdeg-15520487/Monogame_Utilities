@@ -7,7 +7,7 @@ namespace Utility
     {
         public class Screen
         {
-            protected GraphicsDevice _device = null;
+            protected GraphicsDevice device = null;
             /// <summary>
             /// Screen Constructor
             /// </summary>
@@ -15,7 +15,7 @@ namespace Utility
             public Screen(GraphicsDevice device, string name)
             {
                 Name = name;
-                _device = device;
+                this.device = device;
             }
 
             ~Screen()

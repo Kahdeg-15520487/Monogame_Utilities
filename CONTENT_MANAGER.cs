@@ -84,16 +84,26 @@ namespace Utility {
 
 		#endregion
 
+		private static bool IsSpriteBatchBegin = false;
 
-		public static void BeginSpriteBatch() {
-			spriteBatch.Begin(SpriteSortMode.FrontToBack);
+		public static void BeginSpriteBatch(this SpriteBatch spriteBatch, SpriteSortMode spriteSortMode = SpriteSortMode.FrontToBack) {
+			if (IsSpriteBatchBegin) {
+				EndSpriteBatch(spriteBatch);
+			}
+			spriteBatch.Begin(spriteSortMode, BlendState.AlphaBlend);
+			IsSpriteBatchBegin = true;
 		}
-		public static void BeginSpriteBatchWithCamera(Camera camera) {
-			spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: camera.TransformMatrix);
+		public static void BeginSpriteBatchWithCamera(this SpriteBatch spriteBatch, Camera camera, SpriteSortMode spriteSortMode = SpriteSortMode.FrontToBack) {
+			if (IsSpriteBatchBegin) {
+				EndSpriteBatch(spriteBatch);
+			}
+			spriteBatch.Begin(spriteSortMode, BlendState.AlphaBlend, transformMatrix: camera.TransformMatrix);
+			IsSpriteBatchBegin = true;
 		}
 
-		public static void EndSpriteBatch() {
+		public static void EndSpriteBatch(this SpriteBatch spriteBatch) {
 			spriteBatch.End();
+			IsSpriteBatchBegin = false;
 		}
 
 		//public static string MapName { get; internal set; } = null;
