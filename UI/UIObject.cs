@@ -70,6 +70,16 @@ namespace Utility.UI {
 				isVisible = value;
 			}
 		}
+
+		protected float depth = 0f;
+		public virtual float Depth {
+			get {
+				return depth;
+			}
+			set {
+				depth = value;
+			}
+		}
 		
 		/// <summary>
 		/// This must be assign with a font

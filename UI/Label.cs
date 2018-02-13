@@ -50,7 +50,7 @@ namespace Utility.UI {
 			set { origin = value; }
 		}
 
-		public float Depth { get; set; } = LayerDepth.GuiUpper;
+		public override float Depth { get; set; } = LayerDepth.GuiUpper;
 
 		public Label() {
 

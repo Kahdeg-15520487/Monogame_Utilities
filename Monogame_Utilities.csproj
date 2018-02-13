@@ -5,7 +5,7 @@
     <ProjectGuid>{35D95197-C20C-4970-9A06-41B08B1D243C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ClassLibrary</AssemblyName>
+    <AssemblyName>MonogameUtilities</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,7 +21,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -58,6 +58,7 @@
     <Compile Include="Drawing\Camera.cs" />
     <Compile Include="Drawing\DrawingHelper.cs" />
     <Compile Include="Drawing\Primitive2D.cs" />
+    <Compile Include="Drawing\Primitive2DActionGenerator.cs" />
     <Compile Include="Drawing\PrimitiveBatch.cs" />
     <Compile Include="Drawing\TextRenderer.cs" />
     <Compile Include="Drawing\TextureRenderer.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ScreenManager\Screen.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Screen\FileBrowsingScreen.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="UI\AnimationPlayer.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Canvas.cs" />

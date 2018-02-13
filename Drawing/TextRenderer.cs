@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PetGo.Monogame_Utility.Drawing
+namespace Utility.Drawing
 {
     public static class TextRenderer
     {
