@@ -106,14 +106,14 @@ namespace Utility {
 			IsSpriteBatchBegin = false;
 		}
 
-		//public static string MapName { get; internal set; } = null;
+		public static string MapName { get; internal set; } = null;
 
-		//public static void ParseArguments(string[] args) {
-		//	var p = new FluentCommandLineParser();
-		//	p.Setup<string>('m')
-		//		.Callback(x => MapName = x);
-		//	p.Parse(args);
-		//}
+		public static void ParseArguments(string[] args) {
+			var p = new FluentCommandLineParser();
+			p.Setup<string>('m',"map")
+				.Callback(x => MapName = x);
+			p.Parse(args);
+		}
 
 		public static string LocalRootPath;
 
