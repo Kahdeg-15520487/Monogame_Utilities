@@ -24,23 +24,23 @@ namespace Utility.UI {
 		private string defaultButtonText;
 
 		public MessageBox(Point position, string prompt = null, string buttontext = null) {
-			//the msgbox is gonna be 200 x 100
+			//the msgbox is gonna be 240 x 100
 			Position = position;
 
 			defaultPrompt = prompt ?? string.Empty;
 			defaultButtonText = buttontext ?? string.Empty;
 
-			//the button gonna be 50x30
-			middleButton = new Button(defaultButtonText, new Point(position.X + 75, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]);
-			leftButton = new Button(defaultButtonText, new Point(position.X + 20, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]) {
+			//the button gonna be 80x30
+			middleButton = new Button(defaultButtonText, new Point(position.X + 80, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]);
+			leftButton = new Button(defaultButtonText, new Point(position.X, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
 				IsVisible = false
 			};
-			rightButton = new Button(defaultButtonText, new Point(position.X + 130, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]) {
+			rightButton = new Button(defaultButtonText, new Point(position.X + 160, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
 				IsVisible = false
 			};
 
 			label = new Label(defaultPrompt, position, new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"], 1f);
-			background = TextureRenderer.Render(Primitive2DActionGenerator.FillRectangle(new Rectangle(Point.Zero, new Point(200, 100)), Color.LightGray), CONTENT_MANAGER.spriteBatch, CONTENT_MANAGER.gameInstance.GraphicsDevice, new Vector2(200, 100));
+			background = TextureRenderer.Render(Primitive2DActionGenerator.FillRectangle(new Rectangle(Point.Zero, new Point(240, 100)), Color.LightGray), CONTENT_MANAGER.spriteBatch, CONTENT_MANAGER.gameInstance.GraphicsDevice, new Vector2(240, 100));
 
 			depth = LayerDepth.GuiBackground;
 			middleButton.Depth = LayerDepth.GuiLower;
@@ -96,7 +96,7 @@ namespace Utility.UI {
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			spriteBatch.Draw(background, new Rectangle(Position, new Point(200, 100)), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, Depth);
+			spriteBatch.Draw(background, new Rectangle(Position, new Point(240, 100)), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, Depth);
 			middleButton.Draw(spriteBatch, gameTime);
 			label.Draw(spriteBatch, gameTime);
 

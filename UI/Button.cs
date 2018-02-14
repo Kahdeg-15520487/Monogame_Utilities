@@ -138,6 +138,16 @@ namespace Utility.UI {
 			set { origin = value; }
 		}
 
+		public override bool IsVisible {
+			get {
+				return isVisible;
+			}
+			set {
+				isVisible = value;
+				isPressed = false;
+			}
+		}
+
 		public Button()
         {
             Init();

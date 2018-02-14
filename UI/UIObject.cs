@@ -52,7 +52,7 @@ namespace Utility.UI {
 		/// <summary>
 		/// Check if the UI element get focus
 		/// </summary>
-		public bool IsFocused {
+		public virtual bool IsFocused {
 			get {
 				return isFocused;
 			}
@@ -62,7 +62,7 @@ namespace Utility.UI {
 		/// <summary>
 		/// To draw the control or not.
 		/// </summary>
-		public bool IsVisible {
+		public virtual bool IsVisible {
 			get {
 				return isVisible;
 			}
