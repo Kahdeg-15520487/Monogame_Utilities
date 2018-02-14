@@ -40,7 +40,7 @@ namespace Utility.UI {
 			};
 
 			label = new Label(defaultPrompt, position, new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"], 1f);
-			background = TextureRenderer.Render(Primitive2DActionGenerator.FillRectangle(new Rectangle(Point.Zero, new Point(240, 100)), Color.LightGray), CONTENT_MANAGER.spriteBatch, CONTENT_MANAGER.gameInstance.GraphicsDevice, new Vector2(240, 100));
+			background = TextureRenderer.Render(Primitive2DActionGenerator.FillRectangle(new Rectangle(Point.Zero, new Point(240, 100)), Color.LightGray), CONTENT_MANAGER.spriteBatch, new Vector2(240, 100), Vector2.Zero, Color.White);
 
 			depth = LayerDepth.GuiBackground;
 			middleButton.Depth = LayerDepth.GuiLower;
@@ -124,7 +124,7 @@ namespace Utility.UI {
 		protected virtual void OnRightButtonPressed(object sender, UIEventArgs e) {
 			RightButtonPressed?.Invoke(sender, e);
 		}
-		protected virtual void OnMessageboxClicked(object sender,UIEventArgs e) {
+		protected virtual void OnMessageboxClicked(object sender, UIEventArgs e) {
 			MessageboxClicked?.Invoke(sender, e);
 		}
 	}

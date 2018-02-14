@@ -1,77 +1,85 @@
-﻿////using System;
-//using System.IO;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿//using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//using Microsoft.Xna.Framework;
-//using Microsoft.Xna.Framework.Input;
-//using Microsoft.Xna.Framework.Graphics;
-//using Utility.ScreenManager;
-//using Utility.UI;
-//using Utility;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
+using Utility.ScreenManager;
+using Utility.UI;
+using Utility;
+using System;
 
-//namespace Utility.Screens {
-//	class FileBrowsingScreen : Screen {
-//		Canvas canvas;
-//		List<Button> filelist;
+namespace Utility.Screens {
+	public class FileBrowsingScreen : Screen {
+		protected Canvas canvas;
+		List<Button> filelist;
 
-//		public string SelectedFile { get; private set; } = string.Empty;
+		public string SelectedFile { get; private set; } = string.Empty;
 
-//		public FileBrowsingScreen(GraphicsDevice device) : base(device, "FileBrowsingScreen") { }
+		public string StartingDirectory { get; set; }
+		public string SearchPattern { get; set; }
+		public Action<string> CallBack { get; set; }
 
-//		public override bool Init() {
-//			InitUI();
+		public FileBrowsingScreen(GraphicsDevice device) : base(device, "FileBrowsingScreen") { }
 
-//			return base.Init();
-//		}
+		public override bool Init() {
+			InitUI();
 
-//		private void InitUI() {
-//			canvas = new Canvas();
+			return base.Init();
+		}
 
-//			InitMapList();
+		private void InitUI() {
+			canvas = new Canvas();
 
-//			Button button_open = new Button("Play", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["defaultfont"]);
-//			button_open.MouseClick += (o, e) => {
-//				SCREEN_MANAGER.go_back();
-//			};
-//			canvas.AddElement("button_open", button_open);
-//		}
+			InitMapList(StartingDirectory, SearchPattern);
 
-//		private void InitMapList(string startingdir, string searchpattern) {
-//			var files = Directory.GetFiles(startingdir, searchpattern);
-//			var y = 10;
-//			filelist = new List<Button>();
-//			foreach (var m in files) {
-//				Button bt = new Button(Path.GetFileName(m), new Point(10, y), new Vector2(120, 30), CONTENT_MANAGER.Fonts["defaultfont"]) {
-//					Origin = new Vector2(10, 0),
-//					ForegroundColor = Color.Black
-//				};
+			Button button_open = new Button("Open", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["default"]);
+			button_open.MouseClick += (o, e) => {
+				CallBack?.Invoke(SelectedFile);
+			};
+			canvas.AddElement("button_open", button_open);
+		}
 
-//				bt.MouseClick += (o, e) => {
-//					SelectedFile = bt.Text;
-//				};
+		private void InitMapList(string startingdir, string searchpattern) {
+			var files = Directory.GetFiles(startingdir, searchpattern);
+			var y = 10;
+			filelist = new List<Button>();
+			foreach (var m in files) {
+				Button bt = new Button(Path.GetFileNameWithoutExtension(m), new Point(10, y), new Vector2(120, 30), CONTENT_MANAGER.Fonts["default"]) {
+					Origin = new Vector2(10, 0),
+					ForegroundColor = Color.Black,
+					MetaData = Path.GetDirectoryName(m)
+				};
 
-//				y += 35;
-//				filelist.Add(bt);
-//			}
+				bt.MouseClick += (o, e) => {
+					SelectedFile = bt.Text;
+				};
 
-//			foreach (var m in filelist) {
-//				canvas.AddElement(m.Text, m);
-//			}
-//		}
+				y += 35;
+				filelist.Add(bt);
+			}
 
-//		public override void Shutdown() {
-//			base.Shutdown();
-//		}
+			foreach (var m in filelist) {
+				canvas.AddElement(m.Text, m);
+			}
+		}
 
-//		public override void Update(GameTime gameTime) {
-//			canvas.Update(gameTime, CONTENT_MANAGER.CurrentInputState, CONTENT_MANAGER.LastInputState);
-//		}
+		public override void Shutdown() {
+			base.Shutdown();
+		}
 
-//		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-//			canvas.Draw(spriteBatch, gameTime);
-//		}
-//	}
-//}
+		public override void Update(GameTime gameTime) {
+			canvas.Update(gameTime, CONTENT_MANAGER.CurrentInputState, CONTENT_MANAGER.LastInputState);
+		}
+
+		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
+			spriteBatch.BeginSpriteBatch();
+			canvas.Draw(spriteBatch, gameTime);
+			spriteBatch.EndSpriteBatch();
+		}
+	}
+}

@@ -234,7 +234,7 @@ namespace Utility.UI {
             switch (contentType)
             {
                 case ButtonContentType.Text:
-                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["defaultFont"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, ForegroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
+                    spriteBatch.DrawString(Font ?? CONTENT_MANAGER.Fonts["default"], (string.IsNullOrEmpty(text)) ? "" : text, Position.ToVector2() + Size / 4, ForegroundColor, Rotation, origin, scale, SpriteEffects.None, Depth);
 
                     DrawingHelper.DrawRectangle(internalRect, isPressed ? buttonColorPressed : buttonColorReleased, true);
                     DrawingHelper.DrawRectangle(rect, BorderColor, false);

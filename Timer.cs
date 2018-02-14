@@ -44,6 +44,13 @@ namespace Utility {
 		}
 
 		/// <summary>
+		/// Continue this timer
+		/// </summary>
+		public void Continue() {
+			IsRunning = true;
+		}
+
+		/// <summary>
 		/// Stop this timer and reset it to 0
 		/// </summary>
 		public void Reset() {
