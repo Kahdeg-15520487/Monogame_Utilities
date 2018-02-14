@@ -5,7 +5,9 @@ using Utility.Drawing;
 
 namespace Utility.UI {
 	public class MessageBox : UIObject {
-		Button button;
+		Button middleButton;
+		Button leftButton;
+		Button rightButton;
 		Label label;
 		private Texture2D background;
 
@@ -13,7 +15,7 @@ namespace Utility.UI {
 			get => depth;
 			set {
 				depth = value;
-				button.Depth = depth;
+				middleButton.Depth = depth;
 				label.Depth = depth;
 			}
 		}
@@ -29,53 +31,101 @@ namespace Utility.UI {
 			defaultButtonText = buttontext ?? string.Empty;
 
 			//the button gonna be 50x30
-			button = new Button(defaultPrompt, new Point(position.X + 75, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]);
-			label = new Label(defaultButtonText, position, new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"], 1f);
+			middleButton = new Button(defaultButtonText, new Point(position.X + 75, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]);
+			leftButton = new Button(defaultButtonText, new Point(position.X + 20, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]) {
+				IsVisible = false
+			};
+			rightButton = new Button(defaultButtonText, new Point(position.X + 130, position.Y + 100), new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"]) {
+				IsVisible = false
+			};
+
+			label = new Label(defaultPrompt, position, new Vector2(50, 30), CONTENT_MANAGER.Fonts["default"], 1f);
 			background = TextureRenderer.Render(Primitive2DActionGenerator.FillRectangle(new Rectangle(Point.Zero, new Point(200, 100)), Color.LightGray), CONTENT_MANAGER.spriteBatch, CONTENT_MANAGER.gameInstance.GraphicsDevice, new Vector2(200, 100));
 
 			depth = LayerDepth.GuiBackground;
-			button.Depth = LayerDepth.GuiLower;
+			middleButton.Depth = LayerDepth.GuiLower;
 			label.Depth = LayerDepth.GuiLower;
 
-			button.MouseClick += Button_MouseClick;
+			middleButton.MouseClick += (o, e) => MiddleButtonPressed?.Invoke(this, e);
+			leftButton.MouseClick += (o, e) => LeftButtonPressed?.Invoke(this, e);
+			rightButton.MouseClick += (o, e) => RightButtonPressed?.Invoke(this, e);
 		}
 
-		private void Button_MouseClick(object sender, UIEventArgs e) {
-			ButtonPressed?.Invoke(this, e);
-		}
-
-		public void Show(string prompt = null, string buttontext = null) {
+		public void Show(string prompt = null, string buttontext = null, string leftbtn = null, string rightbtn = null) {
 			label.Text = prompt ?? defaultPrompt;
-			button.Text = buttontext ?? defaultButtonText;
+			middleButton.Text = buttontext ?? defaultButtonText;
+
+			if (!string.IsNullOrEmpty(leftbtn)) {
+				leftButton.IsVisible = true;
+				leftButton.Text = leftbtn;
+			}
+			else {
+				leftButton.IsVisible = false;
+			}
+			if (!string.IsNullOrEmpty(rightbtn)) {
+				rightButton.IsVisible = true;
+				rightButton.Text = rightbtn;
+			}
+			else {
+				rightButton.IsVisible = false;
+			}
 
 			isVisible = true;
-			button.IsVisible = IsVisible;
+			middleButton.IsVisible = IsVisible;
 			label.IsVisible = IsVisible;
 		}
 
 		public void Hide() {
 			isVisible = false;
-			button.IsVisible = IsVisible;
+			middleButton.IsVisible = IsVisible;
 			label.IsVisible = IsVisible;
+
+			leftButton.IsVisible = false;
+			rightButton.IsVisible = false;
 		}
 
 		public override void Update(GameTime gameTime, InputState inputState, InputState lastInputState) {
-			button.Update(gameTime, inputState, lastInputState);
+			middleButton.Update(gameTime, inputState, lastInputState);
+			if (leftButton.IsVisible) {
+				leftButton.Update(gameTime, inputState, lastInputState);
+			}
+			if (rightButton.IsVisible) {
+				rightButton.Update(gameTime, inputState, lastInputState);
+			}
 			label.Update(gameTime, inputState, lastInputState);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			spriteBatch.Draw(background, new Rectangle(Position, new Point(200, 100)), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, Depth);
-			button.Draw(spriteBatch, gameTime);
+			middleButton.Draw(spriteBatch, gameTime);
 			label.Draw(spriteBatch, gameTime);
+
+			if (leftButton.IsVisible) {
+				leftButton.Draw(spriteBatch, gameTime);
+			}
+			if (rightButton.IsVisible) {
+				rightButton.Draw(spriteBatch, gameTime);
+			}
 			//draw the border
 			//draw the prompt
 			//draw button
 		}
 
-		public event EventHandler<UIEventArgs> ButtonPressed;
+		public event EventHandler<UIEventArgs> MiddleButtonPressed;
+		public event EventHandler<UIEventArgs> LeftButtonPressed;
+		public event EventHandler<UIEventArgs> RightButtonPressed;
+		public event EventHandler<UIEventArgs> MessageboxClicked;
 		protected virtual void OnButtonPressed(object sender, UIEventArgs e) {
-			ButtonPressed?.Invoke(sender, e);
+			MiddleButtonPressed?.Invoke(sender, e);
+		}
+		protected virtual void OnLeftButtonPressed(object sender, UIEventArgs e) {
+			LeftButtonPressed?.Invoke(sender, e);
+		}
+		protected virtual void OnRightButtonPressed(object sender, UIEventArgs e) {
+			RightButtonPressed?.Invoke(sender, e);
+		}
+		protected virtual void OnMessageboxClicked(object sender,UIEventArgs e) {
+			MessageboxClicked?.Invoke(sender, e);
 		}
 	}
 }
