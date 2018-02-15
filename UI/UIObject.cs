@@ -158,14 +158,16 @@ namespace Utility.UI {
 
 			//LostFocus
 			if ((!rect.Contains(currentInputState.mouseState.Position) && currentInputState.mouseState.LeftButton == ButtonState.Pressed)
-				|| !rect.Contains(currentInputState.touchState.FirstOrDefault().Position)) {
+				//|| !rect.Contains(currentInputState.touchState.FirstOrDefault().Position)
+				) {
 				isFocused = false;
 				OnLostFocus(this, arg);
 			}
 
 			//GotFocus
 			if ((rect.Contains(currentInputState.mouseState.Position) && currentInputState.mouseState.LeftButton == ButtonState.Pressed)
-				|| rect.Contains(currentInputState.touchState.FirstOrDefault().Position)) {
+				//|| rect.Contains(currentInputState.touchState.FirstOrDefault().Position)
+				) {
 				isFocused = true;
 
 				OnGotFocus(this, arg);
@@ -178,6 +180,7 @@ namespace Utility.UI {
 				||
 				(rect.Contains(currentInputState.touchState.FirstOrDefault().Position)
 				&& !rect.Contains(lastInputState.touchState.FirstOrDefault().Position))) {
+				isFocused = true;
 				OnMouseClick(this, arg);
 			}
 

@@ -12,7 +12,6 @@ namespace Utility.UI {
 	public class InputBox : UIObject {
 		StringBuilder textBuffer = new StringBuilder();
 
-		private string temp_text;
 		/// <summary>
 		/// The current text in the buffer. Assign text to this will clear the buffer.
 		/// </summary>
@@ -34,7 +33,7 @@ namespace Utility.UI {
 				base.Size = value;
 			}
 		}
-		//Chau Van Sang adds 
+
 		/// <summary>
 		/// Speed of flicker (change between "" and "|")
 		/// </summary>       
@@ -48,7 +47,9 @@ namespace Utility.UI {
 		/// </summary>
 		private bool isCursor_flicker = false;
 
-		public Color caretColor { get; set; } = Color.DarkGray;
+		private Texture2D rectTexture = null;
+
+		public Color CaretColor { get; set; } = Color.DarkGray;
 		public int CursorPosition { get; set; }
 		public List<char> ignoreCharacter;
 		private int maxTextLength;
@@ -61,15 +62,17 @@ namespace Utility.UI {
 				Size = size.Value;
 			}
 			else {
-
+				//todo auto calculate rect's size
 			}
-			this.Font = font;
-			this.ForegroundColor = foregroundColor;
-			this.BackgroundColor = backgroundColor;
+			Font = font;
+			ForegroundColor = foregroundColor;
+			BackgroundColor = backgroundColor;
 			CursorPosition = 0;
 			maxTextLength = FindMaxTextLength();
 			textSpacing = rect.Width / maxTextLength;
 			ignoreCharacter = new List<char>();
+
+			rectTexture = TextureRenderer.Render(Primitive2DActionGenerator.DrawRectangle(new Rectangle(0, 0, rect.Width, rect.Height), backgroundColor), CONTENT_MANAGER.spriteBatch, new Vector2(rect.Width, rect.Height), Vector2.Zero, backgroundColor);
 
 			CONTENT_MANAGER.gameInstance.Window.TextInput += TextInputHandler;
 		}
@@ -77,18 +80,10 @@ namespace Utility.UI {
 		private void TextInputHandler(object sender, TextInputEventArgs e) {
 			if (isFocused) {
 				if (Font.Characters.Contains(e.Character) && !ignoreCharacter.Contains(e.Character)) {
-					if (Font.MeasureString(textBuffer).X == rect.Width) {
-						temp_text = textBuffer.ToString();
+					if (textBuffer.Length < maxTextLength) {
 						textBuffer.Append(e.Character);
+						CursorPosition++;
 					}
-					if (Font.MeasureString(textBuffer).X > rect.Width - 1) {
-						textBuffer.Append(e.Character);
-						return;
-					}
-
-					textBuffer.Append(e.Character);
-
-					CursorPosition++;
 				}
 			}
 		}
@@ -117,7 +112,7 @@ namespace Utility.UI {
 							textBuffer.Remove(textBuffer.Length - 1, 1);
 							return;
 						}
-						textBuffer.Remove((CursorPosition - 1).Clamp(textBuffer.Length, 0), 1);
+						textBuffer.Remove((CursorPosition - 1).Clamp(textBuffer.Length == 0 ? 0 : textBuffer.Length - 1, 0), 1);
 						CursorPosition--;
 					}
 				}
@@ -130,22 +125,12 @@ namespace Utility.UI {
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			try {
-				if (Font.MeasureString(textBuffer).X <= rect.Width) {
-					spriteBatch.DrawString(Font, textBuffer, rect.Location.ToVector2(), ForegroundColor, Rotation, origin, scale, SpriteEffects.None, LayerDepth.GuiLower);
-				}
-				else {
-					spriteBatch.DrawString(Font, temp_text, rect.Location.ToVector2(), ForegroundColor, Rotation, origin, scale, SpriteEffects.None, LayerDepth.GuiLower);
-				}
-			}
-			catch (Exception e) {
-				CONTENT_MANAGER.Log(e.Message);
-			}
+			spriteBatch.DrawString(Font, textBuffer, rect.Location.ToVector2(), ForegroundColor, Rotation, origin, scale, SpriteEffects.None, LayerDepth.GuiLower);
 
 			//Draw text caret
-			spriteBatch.DrawString(Font, IsFocused ? isCursor_flicker ? "" : "|" : "|", rect.Location.ToVector2() + new Vector2(CursorPosition * textSpacing - 5, -2), caretColor);
+			spriteBatch.DrawString(Font, IsFocused ? isCursor_flicker ? "" : "|" : "|", rect.Location.ToVector2() + new Vector2(CursorPosition * textSpacing - 5, -2), CaretColor);
 
-			DrawingHelper.DrawRectangle(rect, BackgroundColor, true);
+			spriteBatch.Draw(rectTexture, rect.Location.ToVector2(), null, Color.White);
 		}
 	}
 }
