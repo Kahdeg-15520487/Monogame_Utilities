@@ -1,21 +1,17 @@
 ﻿//using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Utility.ScreenManager;
 using Utility.UI;
-using Utility;
 using System;
 
 namespace Utility.Screens {
 	public class FileBrowsingScreen : Screen {
 		protected Canvas canvas;
+		protected MessageBox msgbox;
 		List<Button> filelist;
 
 		public string SelectedFile { get; private set; } = string.Empty;
@@ -39,9 +35,20 @@ namespace Utility.Screens {
 
 			Button button_open = new Button("Open", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["default"]);
 			button_open.MouseClick += (o, e) => {
+				if (string.IsNullOrEmpty(SelectedFile)) {
+					msgbox.Show("Warning!\nNo File is selected.", "OK");
+					return;
+				}
 				CallBack?.Invoke(SelectedFile);
 			};
+
+			msgbox = new MessageBox(new Point(280, 200), "Warning!", "OK");
+			msgbox.Hide();
+			msgbox.MiddleButtonPressed += (o, e) => {
+				msgbox.Hide();
+			};
 			canvas.AddElement("button_open", button_open);
+			canvas.AddElement("msgbox", msgbox);
 		}
 
 		private void InitMapList(string startingdir, string searchpattern) {

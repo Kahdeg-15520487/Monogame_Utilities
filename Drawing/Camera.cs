@@ -48,7 +48,7 @@ namespace Utility.Drawing {
 		public Matrix TransformMatrix {
 			get {
 				return
-					Matrix.CreateTranslation(new Vector3(-centre.X + (viewPort.Width / 2), -centre.Y + (viewPort.Height / 2), 0)) *
+					Matrix.CreateTranslation(new Vector3(-centre.X / Zoom + (viewPort.Width / 2), -centre.Y / zoom + (viewPort.Height / 2), 0)) *
 					Matrix.CreateRotationZ(rotation) *
 					Matrix.CreateScale(zoom);
 			}

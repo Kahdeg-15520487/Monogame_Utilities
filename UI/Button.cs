@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Utility.Drawing;
 
 namespace Utility.UI {
@@ -23,6 +24,8 @@ namespace Utility.UI {
         private Rectangle internalRect;
         private ButtonContentType contentType;
         private Rectangle? _SpriteSourceRectangle = null;
+
+		public Keys Hotkey { get; set; } = Keys.F24;
 
         //Add region to draw text
         private Vector2 stringRect;
@@ -85,7 +88,7 @@ namespace Utility.UI {
             }
         }
 
-        public float Depth { get; set; } = LayerDepth.GuiUpper;
+        public override float Depth { get; set; } = LayerDepth.GuiUpper;
 
         Color buttonColorPressed = Color.LightSlateGray;
         Color buttonColorReleased = Color.White;
@@ -222,6 +225,10 @@ namespace Utility.UI {
             {
                 OnButtonPressed(this, new UIEventArgs(inputState, lastInputState));
             }
+
+			if (HelperFunction.IsKeyPress(Hotkey)) {
+				OnMouseClick(this, new UIEventArgs(inputState, lastInputState));
+			}
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)

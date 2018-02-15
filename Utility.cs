@@ -11,12 +11,12 @@ namespace Utility
 {
     public static class HelperFunction
     {
-        /// <summary>
-        /// convert angle from degree to radian. use to ease process of drawing sprite
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <returns></returns>
-        public static float DegreeToRadian(float angle)
+		/// <summary>
+		/// convert angle from degree to radian. use to ease process of drawing sprite
+		/// </summary>
+		/// <param name="angle"></param>
+		/// <returns></returns>
+		public static float DegreeToRadian(float angle)
         {
             return (float)(Math.PI * angle / 180.0f);
         }
@@ -34,6 +34,9 @@ namespace Utility
             return second - first;
         }
 
+		/// <summary>
+		/// calculate the angle of the vector in radians
+		/// </summary>
         public static float AngleOfVector(Vector2 vt) {
             return (float)Math.Atan2(vt.Y, vt.X);
         }

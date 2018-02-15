@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using Utility.Drawing;
 
@@ -31,7 +32,9 @@ namespace Utility.UI {
 			defaultButtonText = buttontext ?? string.Empty;
 
 			//the button gonna be 80x30
-			middleButton = new Button(defaultButtonText, new Point(position.X + 80, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]);
+			middleButton = new Button(defaultButtonText, new Point(position.X + 80, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
+				Hotkey = Keys.Enter
+			};
 			leftButton = new Button(defaultButtonText, new Point(position.X, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
 				IsVisible = false
 			};
