@@ -12,6 +12,7 @@ namespace Utility.Screens {
 	public class FileBrowsingScreen : Screen {
 		protected Canvas canvas;
 		protected MessageBox msgbox;
+		Label label_selectedFile;
 		List<Button> filelist;
 
 		public string SelectedFile { get; private set; } = string.Empty;
@@ -33,13 +34,18 @@ namespace Utility.Screens {
 
 			InitMapList(StartingDirectory, SearchPattern);
 
-			Button button_open = new Button("Open", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["default"]);
+			Button button_open = new Button("Open", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["default"]) {
+				BorderColor = Color.Black
+			};
 			button_open.MouseClick += (o, e) => {
 				if (string.IsNullOrEmpty(SelectedFile)) {
 					msgbox.Show("Warning!\nNo File is selected.", "OK");
 					return;
 				}
 				CallBack?.Invoke(SelectedFile);
+			};
+			label_selectedFile = new Label("", new Point(600, 50), new Vector2(120, 40), CONTENT_MANAGER.Fonts["hack"]) {
+				Origin =Vector2.Zero
 			};
 
 			msgbox = new MessageBox(new Point(280, 200), "Warning!", "OK");
@@ -49,6 +55,7 @@ namespace Utility.Screens {
 			};
 			canvas.AddElement("button_open", button_open);
 			canvas.AddElement("msgbox", msgbox);
+			canvas.AddElement("label_selectedFile", label_selectedFile);
 		}
 
 		private void InitMapList(string startingdir, string searchpattern) {
@@ -59,11 +66,13 @@ namespace Utility.Screens {
 				Button bt = new Button(Path.GetFileNameWithoutExtension(m), new Point(10, y), new Vector2(120, 30), CONTENT_MANAGER.Fonts["default"]) {
 					Origin = new Vector2(10, 0),
 					ForegroundColor = Color.Black,
+					BorderColor = Color.Black,
 					MetaData = Path.GetDirectoryName(m)
 				};
 
 				bt.MouseClick += (o, e) => {
 					SelectedFile = bt.Text;
+					label_selectedFile.Text = SelectedFile;
 				};
 
 				y += 35;

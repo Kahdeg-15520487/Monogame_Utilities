@@ -23,6 +23,10 @@ namespace Utility.UI {
 
 		private string defaultPrompt;
 		private string defaultButtonText;
+		
+		public virtual Keys MiddleButtonHotkey { get => middleButton.Hotkey; set=>middleButton.Hotkey = value; }
+		public virtual Keys LeftButtonHotkey { get => leftButton.Hotkey; set => leftButton.Hotkey = value; }
+		public virtual Keys RightButtonHotkey { get => rightButton.Hotkey; set => rightButton.Hotkey = value; }
 
 		public MessageBox(Point position, string prompt = null, string buttontext = null) {
 			//the msgbox is gonna be 240 x 100
@@ -33,12 +37,14 @@ namespace Utility.UI {
 
 			//the button gonna be 80x30
 			middleButton = new Button(defaultButtonText, new Point(position.X + 80, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
-				Hotkey = Keys.Enter
+				Origin = new Vector2(0, 0)
 			};
 			leftButton = new Button(defaultButtonText, new Point(position.X, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
+				Origin = new Vector2(13, 0),
 				IsVisible = false
 			};
 			rightButton = new Button(defaultButtonText, new Point(position.X + 160, position.Y + 100), new Vector2(80, 30), CONTENT_MANAGER.Fonts["default"]) {
+				Origin = new Vector2(10, 0),
 				IsVisible = false
 			};
 
