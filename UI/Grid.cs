@@ -10,9 +10,9 @@ namespace Utility.UI {
 			public string Key { get; private set; } = null;
 			public UIObject Element { get; private set; }
 			public GridCell(Point position, Vector2 size, Grid container) {
-				this.Container = container;
-				this.Position = position;
-				this.Size = size;
+				Container = container;
+				Position = position;
+				Size = size;
 			}
 
 			public bool AddElement(string uiName, UIObject element) {
