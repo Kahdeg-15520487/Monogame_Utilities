@@ -38,7 +38,7 @@ namespace Utility {
 		/// load font, all font is put inside folder font
 		/// </summary>
 		/// <param name="fontList">fonts to load</param>
-		public static void LoadFont(params string[] fontList) {
+		public static void LoadFonts(params string[] fontList) {
 			foreach (var font in fontList) {
 				Fonts.Add(font, Content.Load<SpriteFont>(string.Format(@"font\{0}", font)));
 			}
