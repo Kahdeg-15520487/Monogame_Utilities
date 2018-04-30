@@ -41,6 +41,9 @@
       <HintPath>packages\MonoGame.Framework.DesktopGL.3.6.0.1625\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\AnimationMaker\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -51,6 +54,9 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="CONTENT_MANAGER.cs" />
+    <Compile Include="CustomJsonConverter\AnimatedEntityJsonConverter.cs" />
+    <Compile Include="CustomJsonConverter\AnimationJsonConverter.cs" />
+    <Compile Include="CustomJsonConverter\FrameJsonConverter.cs" />
     <Compile Include="Drawing\Animation\AnimatedEntity.cs" />
     <Compile Include="Drawing\Animation\Animation.cs" />
     <Compile Include="Drawing\Animation\Frame.cs" />
@@ -66,6 +72,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="PathFinding\DijikstraHelper.cs" />
     <Compile Include="PathFinding\dijkstra.cs" />
+    <Compile Include="RandomIDGenerator.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="ScreenManager\Screen.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />

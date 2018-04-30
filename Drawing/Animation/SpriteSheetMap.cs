@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace Utility
 {
@@ -37,21 +33,13 @@ namespace Utility
 
             if (width != 0 && height != 0)
             {
-                StringBuilder tt = new StringBuilder();
-                tt.AppendFormat("W = {0}; H = {1}", SpriteSheet.Width, SpriteSheet.Height);
-                tt.AppendLine();
-                tt.AppendFormat("x = {0}; y = {1}", x, y);
-                tt.AppendLine();
                 for (int h = 0; h < y; h++)
                 {
                     for (int w = 0; w < x; w++)
                     {
                         AddSpriteRect((h * x + w).ToString(), new Rectangle(w * width, h * height, width, height));
-                        tt.Append((h * x + w) + "    :    ");
-                        tt.AppendLine(new Rectangle(w * width, h * height, width, height).ToString());
                     }
                 }
-                System.IO.File.AppendAllText("map.txt", tt.ToString());
             }
         }
 

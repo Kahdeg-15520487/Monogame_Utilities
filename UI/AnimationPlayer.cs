@@ -6,7 +6,7 @@ using Utility.UI;
 
 namespace Utility.UI {
 	public class AnimationPlayer : UIObject {
-		AnimatedEntity AnimatedEntity = null;
+		public AnimatedEntity AnimatedEntity = null;
 
 		/// <summary>
 		/// Animation Player for playing AnimatedEntity in a UI context

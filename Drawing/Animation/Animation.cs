@@ -96,6 +96,20 @@ namespace Utility.Drawing.Animation
             totalElapsedTime = 0;
         }
 
+        public Animation(Animation anim)
+        {
+            name = anim.name;
+            shouldLoop = anim.shouldLoop;
+            framesPerSecond = anim.framesPerSecond;
+            transitionKey = anim.transitionKey;
+            keyFrames = new List<Frame>(anim.keyFrames);
+
+            timePerFrame = 1.0f / framesPerSecond;
+            isComplete = false;
+            currentFrame = -1;
+            totalElapsedTime = 0;
+        }
+
         #endregion
 
         #region Methods

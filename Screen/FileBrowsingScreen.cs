@@ -32,7 +32,7 @@ namespace Utility.Screens {
 		private void InitUI() {
 			canvas = new Canvas();
 
-			InitMapList(StartingDirectory, SearchPattern);
+			InitFileList(StartingDirectory, SearchPattern);
 
 			Button button_open = new Button("Open", new Point(600, 10), new Vector2(60, 30), CONTENT_MANAGER.Fonts["default"]) {
 				BorderColor = Color.Black
@@ -58,7 +58,7 @@ namespace Utility.Screens {
 			canvas.AddElement("label_selectedFile", label_selectedFile);
 		}
 
-		private void InitMapList(string startingdir, string searchpattern) {
+		protected virtual void InitFileList(string startingdir, string searchpattern) {
 			var files = Directory.GetFiles(startingdir, searchpattern);
 			var y = 10;
 			filelist = new List<Button>();

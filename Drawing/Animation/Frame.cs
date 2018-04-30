@@ -16,7 +16,7 @@ namespace Utility.Drawing.Animation
 
         #region Properties
 
-        public Rectangle Source
+        public Rectangle GetRekt
         {
             get { return source; }
         }

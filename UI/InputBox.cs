@@ -85,7 +85,7 @@ namespace Utility.UI
 
             rectTexture = TextureRenderer.Render(CONTENT_MANAGER.spriteBatch, new Vector2(rect.Width, rect.Height), Vector2.Zero, backgroundColor, 1, Primitive2DActionGenerator.DrawRectangle(new Rectangle(0, 0, rect.Width, rect.Height), backgroundColor));
 
-            CONTENT_MANAGER.gameInstance.Window.TextInput += TextInputHandler;
+            CONTENT_MANAGER.GameInstance.Window.TextInput += TextInputHandler;
         }
 
         private void TextInputHandler(object sender, TextInputEventArgs e)

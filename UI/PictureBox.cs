@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Utility.UI {
-	class PictureBox : UIObject
+	public class PictureBox : UIObject
     {
         private Texture2D texture2D;
 
