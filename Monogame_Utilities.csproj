@@ -88,7 +88,10 @@
     <Compile Include="UI\MessageBox.cs" />
     <Compile Include="UI\PictureBox.cs" />
     <Compile Include="UI\UIObject.cs" />
-    <Compile Include="Utility.cs" />
+    <Compile Include="Utility\ExtensionMethod.cs" />
+    <Compile Include="Utility\HelperFunction.cs" />
+    <Compile Include="Utility\EnumerableExtension.cs" />
+    <Compile Include="Utility\TypeSwitch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MonoGame.Framework.dll.config" />
