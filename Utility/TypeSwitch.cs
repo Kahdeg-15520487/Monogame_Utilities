@@ -4,9 +4,16 @@ namespace Utility
 {
     public static class TypeSwitch
     {
+        public enum CaseType
+        {
+            Case,
+            Default,
+            Finally
+        }
+
         public class CaseInfo
         {
-            public bool IsDefault { get; set; }
+            public CaseType CaseType { get; set; }
             public Type Target { get; set; }
             public Action<object> Action { get; set; }
         }
@@ -14,13 +21,18 @@ namespace Utility
         public static void Do(object source, params CaseInfo[] cases)
         {
             var type = source.GetType();
-            foreach (var entry in cases)
+            foreach (var c in cases)
             {
-                if (entry.IsDefault || entry.Target.IsAssignableFrom(type))
+                if (c.CaseType == CaseType.Default || (c.CaseType == CaseType.Case && c.Target.IsAssignableFrom(type)))
                 {
-                    entry.Action(source);
+                    c.Action(source);
                     break;
                 }
+            }
+
+            if (cases[cases.Length - 1].CaseType == CaseType.Finally)
+            {
+                cases[cases.Length - 1].Action(source);
             }
         }
 
@@ -29,7 +41,8 @@ namespace Utility
             return new CaseInfo()
             {
                 Action = x => action(),
-                Target = typeof(T)
+                Target = typeof(T),
+                CaseType = CaseType.Case
             };
         }
 
@@ -38,7 +51,8 @@ namespace Utility
             return new CaseInfo()
             {
                 Action = (x) => action((T)x),
-                Target = typeof(T)
+                Target = typeof(T),
+                CaseType = CaseType.Case
             };
         }
 
@@ -47,7 +61,16 @@ namespace Utility
             return new CaseInfo()
             {
                 Action = x => action(),
-                IsDefault = true
+                CaseType = CaseType.Default
+            };
+        }
+
+        public static CaseInfo Finally(Action action)
+        {
+            return new CaseInfo()
+            {
+                Action = x => action(),
+                CaseType = CaseType.Finally
             };
         }
     }

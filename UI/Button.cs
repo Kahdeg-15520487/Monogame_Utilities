@@ -46,7 +46,6 @@ namespace Utility.UI {
         }
 
         Texture2D sprite;
-        bool isFromUISpriteSheet;
         public Texture2D Sprite { set { sprite = value; contentType = ButtonContentType.Texture2D; } get { return sprite; } }
 
         protected string text;
