@@ -24,8 +24,6 @@ namespace Utility.UI {
             }
         }
 
-        public float Depth { get; set; }
-
         private Rectangle? sourceRectangle = null;
         public Rectangle SourceRectangle
         {
@@ -71,6 +69,10 @@ namespace Utility.UI {
 
         public override void Draw(SpriteBatch spriteBatch,GameTime gameTime)
         {
+            if (texture2D is null)
+            {
+                return;
+            }
             spriteBatch.Draw(texture2D, Position.ToVector2(), sourceRectangle, Color.White, Rotation, origin, Scale, SpriteEffects.None, Depth);
         }        
     }

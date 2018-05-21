@@ -86,6 +86,11 @@ namespace Utility
             return CONTENT_MANAGER.CurrentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.LastInputState.keyboardState.IsKeyDown(k);
         }
 
+        public static bool IsKeyPress(KeyboardState currentKeyboardState, KeyboardState lastKeyboardState, Keys k)
+        {
+            return currentKeyboardState.IsKeyUp(k) && lastKeyboardState.IsKeyDown(k);
+        }
+
         public static bool IsKeyPress(params Keys[] ks)
         {
             return ks.All(IsKeyPress);

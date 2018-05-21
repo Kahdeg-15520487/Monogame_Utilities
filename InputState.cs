@@ -34,6 +34,15 @@ namespace Utility
             gamepadState = new GamePadState();
             touchState = touchstate;
         }
+        public InputState(MouseState mousestate, KeyboardState keyboardstate, TouchCollection touchstate)
+        {
+
+            mouseState = mousestate;
+            keyboardState = keyboardstate;
+            joystickState = new JoystickState();
+            gamepadState = new GamePadState();
+            touchState = touchstate;
+        }
 
         #region keyboard state
         public bool IsKeyDown(Keys k)
