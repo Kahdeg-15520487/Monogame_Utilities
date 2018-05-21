@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -83,6 +83,49 @@ namespace Utility.Drawing
             graphicsDevice.SetRenderTarget(finalresult);
             graphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
+
+            spriteBatch.Draw(result, offset, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+
+            return finalresult;
+        }
+
+        /// <summary>
+        /// Take a drawer method and draw it on to a texture
+        /// </summary>
+        /// <param name="drawer">the drawer method, only take in one parameter SpriteBatch</param>
+        /// <param name="size">the normal size of the target texture before apply scaling</param>
+        /// <param name="scale">the scale of the final texture</param>
+        /// <returns></returns>
+        public static Texture2D Render(SpriteBatch spriteBatch, Vector2 size, Vector2 offset, Color background, List<Action<SpriteBatch>> drawerDelegates, float scale = 1f)
+        {
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+            RenderTarget2D result = new RenderTarget2D(graphicsDevice, (int)size.X, (int)size.Y);
+            graphicsDevice.SetRenderTarget(result);
+            graphicsDevice.Clear(background);
+
+            spriteBatch.Begin();
+
+            foreach (var dd in drawerDelegates)
+            {
+                dd.Invoke(spriteBatch);
+            }
+
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+
+
+            if (scale == 1)
+            {
+                return result;
+            }
+
+            RenderTarget2D finalresult = new RenderTarget2D(graphicsDevice, (int)(size.X * scale), (int)(size.Y * scale));
+            graphicsDevice.SetRenderTarget(finalresult);
+            graphicsDevice.Clear(background);
+            spriteBatch.Begin(samplerState: SamplerState.AnisotropicClamp);
 
             spriteBatch.Draw(result, offset, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
