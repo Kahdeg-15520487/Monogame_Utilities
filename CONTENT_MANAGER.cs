@@ -18,8 +18,7 @@ namespace Utility
     public static partial class CONTENT_MANAGER
     {
         public static Game GameInstance;
-        public static Camera camera;
-        public static string rootPath;
+        public static Camera Camera;
 
         #region resources
         public static ContentManager Content;

@@ -83,7 +83,8 @@ namespace Utility
 
         public static bool IsKeyPress(Keys k)
         {
-            return CONTENT_MANAGER.CurrentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.LastInputState.keyboardState.IsKeyDown(k);
+            //return CONTENT_MANAGER.CurrentInputState.keyboardState.IsKeyUp(k) && CONTENT_MANAGER.LastInputState.keyboardState.IsKeyDown(k);
+            return IsKeyPress(CONTENT_MANAGER.CurrentInputState.keyboardState, CONTENT_MANAGER.LastInputState.keyboardState, k);
         }
 
         public static bool IsKeyPress(KeyboardState currentKeyboardState, KeyboardState lastKeyboardState, Keys k)
@@ -91,7 +92,12 @@ namespace Utility
             return currentKeyboardState.IsKeyUp(k) && lastKeyboardState.IsKeyDown(k);
         }
 
-        public static bool IsKeyPress(params Keys[] ks)
+        public static bool IsAnyKeyPress(params Keys[] ks)
+        {
+            return ks.Any(IsKeyPress);
+        }
+
+        public static bool IsComboKeyPress(params Keys[] ks)
         {
             return ks.All(IsKeyPress);
         }

@@ -14,10 +14,13 @@
 
     public enum Direction
     {
+        Void = -1, None = -1,
         NorthWest, North, NorthEast,
         West, Center, East,
         SouthWest, South, SouthEast,
-        Void
+        Up = 1,
+        Left = 3, Right = 5,
+        Down = 7
     }
 
     public enum HorizontalAlignment

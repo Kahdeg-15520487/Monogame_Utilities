@@ -17,9 +17,9 @@ namespace Utility.Screens {
 
 		public string SelectedFile { get; private set; } = string.Empty;
 
-		public string StartingDirectory { get; set; }
-		public string SearchPattern { get; set; }
-		public Action<string> CallBack { get; set; }
+		public string StartingDirectory { get; set; } = string.Empty;
+        public string SearchPattern { get; set; } = "*";
+        public Action<string> CallBack { get; set; }
 
 		public FileBrowsingScreen(GraphicsDevice device) : base(device, "FileBrowsingScreen") { }
 
@@ -44,7 +44,7 @@ namespace Utility.Screens {
 				}
 				CallBack?.Invoke(SelectedFile);
 			};
-			label_selectedFile = new Label("", new Point(600, 50), new Vector2(120, 40), CONTENT_MANAGER.Fonts["hack"]) {
+			label_selectedFile = new Label("", new Point(600, 50), new Vector2(120, 40), CONTENT_MANAGER.Fonts["default"]) {
 				Origin =Vector2.Zero
 			};
 
@@ -59,7 +59,7 @@ namespace Utility.Screens {
 		}
 
 		protected virtual void InitFileList(string startingdir, string searchpattern) {
-			var files = Directory.GetFiles(startingdir, searchpattern);
+			var files = GetFiles(startingdir, searchpattern);
 			var y = 10;
 			filelist = new List<Button>();
 			foreach (var m in files) {
@@ -84,7 +84,17 @@ namespace Utility.Screens {
 			}
 		}
 
-		public override void Shutdown() {
+        protected static string[] GetFiles(string path, string searchPattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        {
+            string[] searchPatterns = searchPattern.Split('|');
+            List<string> files = new List<string>();
+            foreach (string sp in searchPatterns)
+                files.AddRange(Directory.GetFiles(path, sp, searchOption));
+            files.Sort();
+            return files.ToArray();
+        }
+
+        public override void Shutdown() {
 			base.Shutdown();
 		}
 
