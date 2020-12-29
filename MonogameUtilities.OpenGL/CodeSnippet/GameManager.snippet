@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>GameManager</Title>
+      <Author>
+      </Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>GameManager</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MainNamespace</ID>
+          <ToolTip>MainNamespace</ToolTip>
+          <Default>MainNamespace</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Delimiter="$"><![CDATA[using System.IO;
+using System.Reflection;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using Utility;
+using Utility.CustomJsonConverter;
+using Utility.Drawing;
+using Utility.Drawing.Animation;
+using Utility.ScreenManager;
+
+namespace $MainNamespace$
+{
+    public class GameManager : Game
+    {
+        GraphicsDeviceManager graphics;
+
+        public GameManager()
+        {
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 600,
+                PreferredBackBufferHeight = 400
+            };
+            graphics.ApplyChanges();
+            Content.RootDirectory = "Content";
+
+            CONTENT_MANAGER.Content = Content;
+            CONTENT_MANAGER.GameInstance = this;
+
+            CONTENT_MANAGER.LocalRootPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).Location);
+            this.IsMouseVisible = true;
+        }
+
+        protected override void Initialize()
+        {
+            DrawingHelper.Initialize(GraphicsDevice);
+            CONTENT_MANAGER.spriteBatch = new SpriteBatch(GraphicsDevice);
+            CONTENT_MANAGER.GameInstance = this;
+            Primitive2DActionGenerator.CreateThePixel(CONTENT_MANAGER.spriteBatch);
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            CONTENT_MANAGER.LoadFonts("default");
+
+            InitScreen();
+        }
+
+        private void InitScreen()
+        {
+            SCREEN_MANAGER.Init();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            CONTENT_MANAGER.CurrentInputState = new InputState(Mouse.GetState(), Keyboard.GetState());
+
+            SCREEN_MANAGER.Update(gameTime);
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+
+            SCREEN_MANAGER.Draw(CONTENT_MANAGER.spriteBatch, gameTime);
+
+            base.Draw(gameTime);
+        }
+    }
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
